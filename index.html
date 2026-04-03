@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ニャンコカードダスバトル</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="game-wrapper">
+
+  <!-- タイトル -->
+  <header class="game-title">
+    🐾 ニャンコカードダスバトル 🐾
+    <span>NYANKO CARDDAS BATTLE</span>
+  </header>
+
+  <!-- ステータスエリア -->
+  <section class="status-area">
+
+    <!-- CPU ステータス -->
+    <div class="status-box cpu-side">
+      <div class="status-label">ENEMY</div>
+      <div class="status-name">😼 CPU</div>
+      <div class="hp-bar-wrap">
+        <div id="cpu-hp-bar" class="hp-bar" style="width:100%"></div>
+      </div>
+      <div class="status-nums">
+        <span>HP <strong id="cpu-hp">100</strong></span>
+        <span>MP <strong id="cpu-mp">5</strong></span>
+        <span>DECK <strong id="cpu-deck">20</strong></span>
+        <span id="cpu-poison" class="poison-icon">☠️ 毒</span>
+      </div>
+    </div>
+
+    <!-- ターン -->
+    <div class="turn-badge">
+      TURN<br>
+      <strong id="turn-num">1</strong>
+    </div>
+
+    <!-- プレイヤー ステータス -->
+    <div class="status-box">
+      <div class="status-label">PLAYER</div>
+      <div class="status-name">🐱 あなた</div>
+      <div class="hp-bar-wrap">
+        <div id="player-hp-bar" class="hp-bar" style="width:100%"></div>
+      </div>
+      <div class="status-nums">
+        <span>HP <strong id="player-hp">100</strong></span>
+        <span>MP <strong id="player-mp">5</strong></span>
+        <span>DECK <strong id="player-deck">20</strong></span>
+        <span id="player-poison" class="poison-icon">☠️ 毒</span>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- バトルエリア -->
+  <section class="battle-area">
+    <div class="battle-slot" id="cpu-battle-card">
+      <div class="empty-slot">待機中…</div>
+    </div>
+    <div class="vs-text">VS</div>
+    <div class="battle-slot" id="player-battle-card">
+      <div class="empty-slot">カードを<br>選んでください</div>
+    </div>
+  </section>
+
+  <!-- バトルログ -->
+  <div class="log-area" id="battle-log"></div>
+
+  <!-- 手札エリア -->
+  <div class="hand-area">
+    <div class="hand-label">🃏 手札</div>
+    <div id="player-hand"></div>
+  </div>
+
+  <!-- アクションボタン -->
+  <div class="action-area">
+    <button class="btn btn-skip" id="skip-btn">スキップ</button>
+    <button class="btn btn-restart" id="restart-btn">はじめから</button>
+  </div>
+
+</div>
+
+<!-- リザルトオーバーレイ -->
+<div class="result-overlay" id="result-overlay">
+  <div class="result-box">
+    <div id="result-title"></div>
+    <div id="result-sub"></div>
+    <button class="btn btn-restart" id="restart-btn-result"
+      onclick="initGame(); renderUI();">もう一度</button>
+  </div>
+</div>
+
+<script src="js/cards.js"></script>
+<script src="js/game.js"></script>
+<script src="js/ui.js"></script>
+</body>
+</html>

@@ -1,0 +1,427 @@
+/* ============================================================
+   style.css  ─  ニャンコカードダスバトル
+   テーマ：レトロRPG／ドット絵風
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&family=Kaisei+Opti:wght@400;700&display=swap');
+
+/* ── CSS 変数 ──────────────────────────────────────────── */
+:root {
+  --bg:          #0d0d1a;
+  --bg2:         #13132a;
+  --panel:       #1a1a38;
+  --panel2:      #1f1f42;
+  --border:      #3a3a7c;
+  --border-glow: #5a5adc;
+  --text:        #d0d0ff;
+  --text-dim:    #6060a0;
+  --accent:      #ffd700;
+  --accent2:     #ff6060;
+  --green:       #44ff88;
+  --blue:        #44aaff;
+  --red:         #ff4444;
+
+  /* レアリティ */
+  --n-color:   #a0a0c0;
+  --r-color:   #4488ff;
+  --sr-color:  #ffcc00;
+
+  --font-pixel: 'DotGothic16', monospace;
+  --font-body:  'Kaisei Opti', serif;
+}
+
+/* ── リセット ──────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-pixel);
+  font-size: 14px;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* 背景グリッド模様 */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(90,90,220,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(90,90,220,.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── レイアウト ──────────────────────────────────────────── */
+.game-wrapper {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 12px;
+  display: grid;
+  grid-template-rows: auto auto 1fr auto auto;
+  gap: 10px;
+  min-height: 100vh;
+}
+
+/* ── タイトル ──────────────────────────────────────────── */
+.game-title {
+  text-align: center;
+  padding: 10px;
+  font-size: 18px;
+  color: var(--accent);
+  text-shadow: 0 0 12px var(--accent), 0 0 24px rgba(255,215,0,.3);
+  letter-spacing: 2px;
+  border-bottom: 2px solid var(--border);
+}
+.game-title span { color: var(--text-dim); font-size: 11px; display: block; margin-top: 2px; }
+
+/* ── ステータスバー ──────────────────────────────────────── */
+.status-area {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 10px;
+  align-items: center;
+}
+
+.status-box {
+  background: var(--panel);
+  border: 2px solid var(--border);
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+.status-box.cpu-side { text-align: right; }
+
+.status-label {
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-bottom: 4px;
+}
+.status-name {
+  font-size: 13px;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+
+.hp-bar-wrap {
+  background: #111128;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  height: 10px;
+  margin-bottom: 4px;
+  overflow: hidden;
+}
+.hp-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--green), #22cc66);
+  transition: width .4s ease, background .4s;
+  border-radius: 2px;
+}
+.hp-bar.danger { background: linear-gradient(90deg, var(--red), #cc2222); }
+
+.status-nums {
+  display: flex;
+  gap: 12px;
+  font-size: 11px;
+  color: var(--text-dim);
+  flex-wrap: wrap;
+}
+.status-box.cpu-side .status-nums { justify-content: flex-end; }
+
+.status-nums strong { color: var(--text); }
+
+.poison-icon {
+  display: none;
+  background: #440044;
+  border: 1px solid #882288;
+  color: #ff88ff;
+  font-size: 9px;
+  padding: 1px 5px;
+  border-radius: 2px;
+}
+
+.turn-badge {
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-dim);
+}
+.turn-badge strong {
+  display: block;
+  font-size: 22px;
+  color: var(--accent);
+  text-shadow: 0 0 8px var(--accent);
+}
+
+/* ── バトルエリア ──────────────────────────────────────── */
+.battle-area {
+  display: grid;
+  grid-template-columns: 1fr 60px 1fr;
+  gap: 10px;
+  align-items: center;
+  background: var(--panel2);
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  padding: 14px 10px;
+  min-height: 160px;
+}
+
+.vs-text {
+  text-align: center;
+  font-size: 20px;
+  color: var(--accent2);
+  text-shadow: 0 0 10px var(--accent2);
+}
+
+.battle-slot { display: flex; justify-content: center; }
+
+.empty-slot {
+  border: 2px dashed var(--border);
+  border-radius: 6px;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dim);
+  font-size: 11px;
+  text-align: center;
+  line-height: 1.6;
+}
+
+/* ── カード共通 ──────────────────────────────────────────── */
+.card-inner {
+  width: 120px;
+  min-height: 120px;
+  padding: 8px 6px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+  position: relative;
+  border-radius: 6px;
+}
+
+.card-cost {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 9px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 1px 4px;
+  border-radius: 2px;
+  color: var(--blue);
+}
+
+.card-name {
+  font-size: 9px;
+  color: var(--text);
+  line-height: 1.3;
+  min-height: 24px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.card-emoji {
+  font-size: 28px;
+  line-height: 1;
+  margin: 2px 0;
+}
+
+.card-stats {
+  display: flex;
+  gap: 6px;
+  font-size: 10px;
+}
+.card-stats .atk { color: var(--accent2); }
+.card-stats .def { color: var(--blue); }
+
+.card-effect {
+  font-size: 8px;
+  background: #220044;
+  border: 1px solid #6600aa;
+  color: #cc88ff;
+  padding: 1px 4px;
+  border-radius: 2px;
+}
+
+/* ── 手札カード ──────────────────────────────────────────── */
+.hand-area {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hand-label {
+  font-size: 11px;
+  color: var(--text-dim);
+  padding-left: 4px;
+}
+
+#player-hand {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  min-height: 140px;
+  align-items: flex-start;
+}
+
+.hand-card {
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform .15s, box-shadow .15s, border-color .15s;
+  background: var(--panel);
+  position: relative;
+}
+
+.hand-card.playable {
+  cursor: pointer;
+}
+.hand-card.playable:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px rgba(0,0,0,.6);
+}
+.hand-card.disabled {
+  opacity: .45;
+  cursor: not-allowed;
+  filter: saturate(.3);
+}
+
+/* レアリティ枠色 */
+.hand-card.rarity-n, .rarity-n .card-inner { border-color: var(--n-color); }
+.hand-card.rarity-r, .rarity-r .card-inner { border-color: var(--r-color); box-shadow: 0 0 6px rgba(68,136,255,.3); }
+.hand-card.rarity-sr, .rarity-sr .card-inner {
+  border-color: var(--sr-color);
+  box-shadow: 0 0 10px rgba(255,204,0,.4);
+}
+.hand-card.playable.rarity-sr:hover {
+  box-shadow: 0 8px 24px rgba(255,204,0,.5);
+}
+
+/* バトルカード（レアリティ枠） */
+.battle-slot .rarity-n  { border: 2px solid var(--n-color); }
+.battle-slot .rarity-r  { border: 2px solid var(--r-color); box-shadow: 0 0 8px rgba(68,136,255,.4); }
+.battle-slot .rarity-sr { border: 2px solid var(--sr-color); box-shadow: 0 0 12px rgba(255,204,0,.5); }
+
+/* ── バトルログ ──────────────────────────────────────────── */
+.log-area {
+  background: var(--bg2);
+  border: 2px solid var(--border);
+  border-radius: 4px;
+  padding: 8px;
+  height: 120px;
+  overflow-y: auto;
+  font-size: 11px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.log-line {
+  padding: 2px 0;
+  border-bottom: 1px solid rgba(58,58,124,.3);
+  color: var(--text);
+  line-height: 1.5;
+}
+.log-line:first-child { color: #fff; }
+
+/* ── ボタン ──────────────────────────────────────────────── */
+.action-area {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.btn {
+  font-family: var(--font-pixel);
+  font-size: 13px;
+  padding: 10px 24px;
+  border: 2px solid;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all .15s;
+  letter-spacing: 1px;
+}
+
+.btn-skip {
+  background: var(--bg2);
+  border-color: var(--border);
+  color: var(--text-dim);
+}
+.btn-skip:hover:not(:disabled) {
+  border-color: var(--border-glow);
+  color: var(--text);
+}
+.btn-skip:disabled {
+  opacity: .3;
+  cursor: not-allowed;
+}
+
+.btn-restart {
+  background: #1a0a00;
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.btn-restart:hover {
+  background: var(--accent);
+  color: #000;
+  box-shadow: 0 0 12px rgba(255,215,0,.4);
+}
+
+/* ── リザルトオーバーレイ ────────────────────────────────── */
+.result-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,.75);
+  backdrop-filter: blur(4px);
+}
+
+.result-box {
+  background: var(--panel);
+  border: 3px solid var(--border-glow);
+  border-radius: 8px;
+  padding: 40px 60px;
+  text-align: center;
+  box-shadow: 0 0 40px rgba(90,90,220,.4);
+}
+
+#result-title {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+#result-sub {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-bottom: 24px;
+}
+
+.result-overlay.win  .result-box { border-color: var(--sr-color); box-shadow: 0 0 40px rgba(255,204,0,.3); }
+.result-overlay.lose .result-box { border-color: var(--red);      box-shadow: 0 0 40px rgba(255,68,68,.3); }
+.result-overlay.draw .result-box { border-color: var(--border-glow); }
+
+/* ── スクロールバー ─────────────────────────────────────── */
+.log-area::-webkit-scrollbar { width: 4px; }
+.log-area::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* ── レスポンシブ ────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .game-title  { font-size: 14px; }
+  .status-area { grid-template-columns: 1fr; gap: 6px; }
+  .turn-badge  { order: -1; }
+  .battle-area { grid-template-columns: 1fr 40px 1fr; }
+  .card-inner  { width: 100px; }
+  .card-emoji  { font-size: 22px; }
+  #player-hand { gap: 6px; }
+  .result-box  { padding: 24px 28px; }
+}
