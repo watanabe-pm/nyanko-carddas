@@ -1,0 +1,52 @@
+# ===== OS系 =====
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Linux
+*~
+
+# ===== エディタ系 =====
+
+# VSCode
+.vscode/
+*.code-workspace
+
+# ===== Node.js系 =====
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+.npm
+.env
+.env.*
+
+# ===== 一般的な一時ファイル =====
+*.tmp
+*.bak
+*.swp
+*.log
+
+# ===== プロジェクト固有 =====
+
+# Claude Code
+.claude/
+
+# ローカル作業用プロンプトファイル
+prompt.txt

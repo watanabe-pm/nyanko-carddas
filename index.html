@@ -1,102 +1,149 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ニャンコカードダスバトル</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
-<div class="game-wrapper">
-
-  <!-- タイトル -->
-  <header class="game-title">
-    🐾 ニャンコカードダスバトル 🐾
-    <span>NYANKO CARDDAS BATTLE</span>
-  </header>
-
-  <!-- ステータスエリア -->
-  <section class="status-area">
-
-    <!-- CPU ステータス -->
-    <div class="status-box cpu-side">
-      <div class="status-label">ENEMY</div>
-      <div class="status-name">😼 CPU</div>
-      <div class="hp-bar-wrap">
-        <div id="cpu-hp-bar" class="hp-bar" style="width:100%"></div>
-      </div>
-      <div class="status-nums">
-        <span>HP <strong id="cpu-hp">100</strong></span>
-        <span>MP <strong id="cpu-mp">5</strong></span>
-        <span>DECK <strong id="cpu-deck">20</strong></span>
-        <span id="cpu-poison" class="poison-icon">☠️ 毒</span>
-      </div>
+  <!-- ===== タイトル画面 ===== -->
+  <div id="screen-title" class="screen active">
+    <div class="title-wrap">
+      <h1 class="title-main">ニャンコ<br>カードダスバトル</h1>
+      <p class="title-sub">猫の力で人間を攻略せよ！</p>
+      <button id="btn-start" class="btn btn-primary">ゲームスタート</button>
     </div>
-
-    <!-- ターン -->
-    <div class="turn-badge">
-      TURN<br>
-      <strong id="turn-num">1</strong>
-    </div>
-
-    <!-- プレイヤー ステータス -->
-    <div class="status-box">
-      <div class="status-label">PLAYER</div>
-      <div class="status-name">🐱 あなた</div>
-      <div class="hp-bar-wrap">
-        <div id="player-hp-bar" class="hp-bar" style="width:100%"></div>
-      </div>
-      <div class="status-nums">
-        <span>HP <strong id="player-hp">100</strong></span>
-        <span>MP <strong id="player-mp">5</strong></span>
-        <span>DECK <strong id="player-deck">20</strong></span>
-        <span id="player-poison" class="poison-icon">☠️ 毒</span>
-      </div>
-    </div>
-
-  </section>
-
-  <!-- バトルエリア -->
-  <section class="battle-area">
-    <div class="battle-slot" id="cpu-battle-card">
-      <div class="empty-slot">待機中…</div>
-    </div>
-    <div class="vs-text">VS</div>
-    <div class="battle-slot" id="player-battle-card">
-      <div class="empty-slot">カードを<br>選んでください</div>
-    </div>
-  </section>
-
-  <!-- バトルログ -->
-  <div class="log-area" id="battle-log"></div>
-
-  <!-- 手札エリア -->
-  <div class="hand-area">
-    <div class="hand-label">🃏 手札</div>
-    <div id="player-hand"></div>
   </div>
 
-  <!-- アクションボタン -->
-  <div class="action-area">
-    <button class="btn btn-skip" id="skip-btn">スキップ</button>
-    <button class="btn btn-restart" id="restart-btn">はじめから</button>
+  <!-- ===== カードドロー画面 ===== -->
+  <div id="screen-draw" class="screen">
+    <div class="screen-inner">
+      <h2 class="screen-title">カードドロー</h2>
+      <p class="screen-desc">5枚の猫カードをドローしました！</p>
+      <p class="item-points-display">獲得アイテムポイント: <span id="draw-item-points">0</span>pt</p>
+      <div id="draw-card-list" class="card-list"></div>
+      <button id="btn-draw-next" class="btn btn-primary">ステージ1へ進む</button>
+    </div>
   </div>
 
-</div>
-
-<!-- リザルトオーバーレイ -->
-<div class="result-overlay" id="result-overlay">
-  <div class="result-box">
-    <div id="result-title"></div>
-    <div id="result-sub"></div>
-    <button class="btn btn-restart" id="restart-btn-result"
-      onclick="initGame(); renderUI();">もう一度</button>
+  <!-- ===== ステージ開始画面 ===== -->
+  <div id="screen-stage-start" class="screen">
+    <div class="screen-inner">
+      <h2 class="screen-title">ステージ <span id="stage-number">1</span></h2>
+      <div class="enemy-intro">
+        <div class="enemy-name-display" id="stage-enemy-name"></div>
+        <div class="enemy-stats-display" id="stage-enemy-stats"></div>
+      </div>
+      <button id="btn-stage-to-prep" class="btn btn-primary">バトル準備へ</button>
+    </div>
   </div>
-</div>
 
-<script src="js/cards.js"></script>
-<script src="js/game.js"></script>
-<script src="js/ui.js"></script>
+  <!-- ===== バトル準備画面 ===== -->
+  <div id="screen-battle-prep" class="screen">
+    <div class="screen-inner">
+      <h2 class="screen-title">バトル準備</h2>
+
+      <!-- 猫選択 -->
+      <section class="prep-section">
+        <h3 class="prep-label">出撃する猫を3匹選んでください</h3>
+        <div id="prep-card-list" class="card-list selectable"></div>
+      </section>
+
+      <!-- アイテム購入・装備 -->
+      <section class="prep-section">
+        <h3 class="prep-label">アイテム（残り <span id="prep-item-points">0</span>pt）</h3>
+        <div id="prep-item-shop" class="item-shop"></div>
+        <div id="prep-equip-area" class="equip-area"></div>
+      </section>
+
+      <!-- 行動選択 -->
+      <section class="prep-section" id="prep-action-section">
+        <h3 class="prep-label">各猫の行動を選んでください</h3>
+        <div id="prep-action-list" class="action-list"></div>
+      </section>
+
+      <button id="btn-battle-start" class="btn btn-primary" disabled>バトル開始</button>
+    </div>
+  </div>
+
+  <!-- ===== バトル画面 ===== -->
+  <div id="screen-battle" class="screen">
+    <div class="screen-inner">
+      <h2 class="screen-title">バトル</h2>
+
+      <!-- 敵情報 -->
+      <div class="battle-enemy-area">
+        <div class="battle-enemy-name" id="battle-enemy-name"></div>
+        <div class="battle-enemy-hp-wrap">
+          <span>HP</span>
+          <div class="gauge-bar">
+            <div class="gauge-fill hp-fill" id="battle-enemy-hp-bar"></div>
+          </div>
+          <span id="battle-enemy-hp-text"></span>
+        </div>
+        <div class="battle-enemy-charm-wrap">
+          <span>魅了度</span>
+          <div class="gauge-bar">
+            <div class="gauge-fill charm-fill" id="battle-enemy-charm-bar"></div>
+          </div>
+          <span id="battle-enemy-charm-text"></span>
+        </div>
+      </div>
+
+      <!-- 猫ステータス -->
+      <div id="battle-cat-area" class="battle-cat-area"></div>
+
+      <!-- バトルログ -->
+      <div id="battle-log" class="battle-log"></div>
+
+      <!-- ラウンド進行ボタン -->
+      <button id="btn-next-round" class="btn btn-primary">次のラウンドへ</button>
+    </div>
+  </div>
+
+  <!-- ===== ステージクリア画面 ===== -->
+  <div id="screen-stage-clear" class="screen">
+    <div class="screen-inner">
+      <h2 class="screen-title">ステージクリア！</h2>
+      <p id="stage-clear-msg"></p>
+      <h3 class="prep-label">報酬を選んでください</h3>
+      <div class="reward-choices">
+        <button id="btn-reward-hp" class="btn btn-secondary">
+          出撃猫のHP 50% 回復
+        </button>
+        <button id="btn-reward-points" class="btn btn-secondary">
+          アイテムポイント +8pt
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ゲームオーバー画面 ===== -->
+  <div id="screen-gameover" class="screen">
+    <div class="screen-inner">
+      <h2 class="screen-title gameover-title">ゲームオーバー</h2>
+      <p class="gameover-msg">猫が全滅してしまった…</p>
+      <button id="btn-retry" class="btn btn-primary">タイトルへ戻る</button>
+    </div>
+  </div>
+
+  <!-- ===== エンディング画面 ===== -->
+  <div id="screen-ending" class="screen">
+    <div class="screen-inner">
+      <h2 class="screen-title ending-title">クリア！</h2>
+      <p class="ending-msg">全5ステージを制覇した！<br>猫たちの圧勝だ！</p>
+      <button id="btn-ending-title" class="btn btn-primary">タイトルへ戻る</button>
+    </div>
+  </div>
+
+  <!-- JS読み込み（依存順） -->
+  <script src="js/cards.js"></script>
+  <script src="js/items.js"></script>
+  <script src="js/enemies.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/ui.js"></script>
+
 </body>
 </html>

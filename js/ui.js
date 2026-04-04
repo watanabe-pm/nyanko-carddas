@@ -1,145 +1,425 @@
-// ============================================================
-// ui.js  ─  UI 描画・イベント処理
-// ============================================================
+// UI描画・イベント処理
+// 各画面の表示切替と、ユーザー操作のハンドリングを担当
 
-function renderUI() {
-  renderStatus();
-  renderBattleArea();
-  renderHand();
-  renderLog();
-  renderResult();
-}
+// ===== 画面切替 =====
 
-// ── ステータス表示 ────────────────────────────────────────
-function renderStatus() {
-  const p = state.player;
-  const c = state.cpu;
-
-  // HP バー
-  setHpBar('player', p.hp);
-  setHpBar('cpu',    c.hp);
-
-  // 数値
-  setText('player-hp',   p.hp);
-  setText('player-mp',   p.mp);
-  setText('player-deck', p.deck.length);
-  setText('cpu-hp',      c.hp);
-  setText('cpu-mp',      c.mp);
-  setText('cpu-deck',    c.deck.length);
-  setText('turn-num',    state.turn);
-
-  // 毒アイコン
-  show('player-poison', p.poisonTurns > 0);
-  show('cpu-poison',    c.poisonTurns > 0);
-}
-
-function setHpBar(who, hp) {
-  const bar = document.getElementById(`${who}-hp-bar`);
-  if (!bar) return;
-  const pct = Math.max(0, Math.min(100, hp));
-  bar.style.width = `${pct}%`;
-  bar.classList.toggle('danger', pct <= 30);
-}
-
-function setText(id, val) {
-  const el = document.getElementById(id);
-  if (el) el.textContent = val;
-}
-
-function show(id, visible) {
-  const el = document.getElementById(id);
-  if (el) el.style.display = visible ? 'inline-block' : 'none';
-}
-
-// ── バトルエリア ──────────────────────────────────────────
-function renderBattleArea() {
-  const pcEl = document.getElementById('player-battle-card');
-  const ccEl = document.getElementById('cpu-battle-card');
-
-  pcEl.innerHTML = state.playerCard
-    ? cardHTML(state.playerCard, false)
-    : `<div class="empty-slot">カードを<br>選んでください</div>`;
-
-  ccEl.innerHTML = state.cpuCard
-    ? cardHTML(state.cpuCard, false)
-    : `<div class="empty-slot">待機中…</div>`;
-}
-
-// ── 手札 ─────────────────────────────────────────────────
-function renderHand() {
-  const handEl = document.getElementById('player-hand');
-  handEl.innerHTML = '';
-
-  state.player.hand.forEach((card, idx) => {
-    const canPlay = card.cost <= state.player.mp && state.phase === 'player';
-    const el = document.createElement('div');
-    el.className = `hand-card rarity-${card.rarity.toLowerCase()} ${canPlay ? 'playable' : 'disabled'}`;
-    el.innerHTML = cardHTML(card, true);
-    if (canPlay) el.addEventListener('click', () => playerPlayCard(idx));
-    handEl.appendChild(el);
+// 指定IDの画面のみ表示する
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(el => {
+    el.classList.remove('active');
   });
-
-  const skipBtn = document.getElementById('skip-btn');
-  if (skipBtn) skipBtn.disabled = state.phase !== 'player';
+  const target = document.getElementById(id);
+  if (target) {
+    target.classList.add('active');
+    window.scrollTo(0, 0);
+  }
 }
 
-// ── カード HTML ────────────────────────────────────────────
-function cardHTML(card, showCost) {
-  const effName = card.effect !== 'NONE' ? EFFECT_NAMES[card.effect] : '';
-  const effDesc = card.effect !== 'NONE' ? EFFECT_DESC[card.effect]  : '';
-  return `
-    <div class="card-inner">
-      ${showCost ? `<div class="card-cost">MP ${card.cost}</div>` : ''}
-      <div class="card-name">${card.name}</div>
-      <div class="card-emoji">${card.emoji}</div>
-      <div class="card-stats">
-        <span class="atk">ATK ${card.atk}</span>
-        <span class="def">DEF ${card.def}</span>
-      </div>
-      ${effName ? `<div class="card-effect" title="${effDesc}">${effName}</div>` : ''}
+// ===== 猫カードHTML生成 =====
+
+// カードオブジェクトからカード要素を生成して返す
+function createCatCardEl(card, options = {}) {
+  const el = document.createElement('div');
+  el.className = 'cat-card';
+  el.dataset.id = card.id;
+  el.dataset.rarity = card.rarity;
+
+  // 現在HPをバトル中の値で表示（渡された場合）
+  const currentHp = options.currentHp !== undefined ? options.currentHp : card.hp;
+
+  el.innerHTML = `
+    <div class="card-rarity">${card.rarity}</div>
+    <div class="card-name">${card.name}</div>
+    <div class="card-stats">
+      <span><em>HP</em><strong>${currentHp}/${card.maxHp}</strong></span>
+      <span><em>ATK</em><strong>${card.atk}</strong></span>
+      <span><em>CHARM</em><strong>${card.charm}</strong></span>
+      <span><em>SPD</em><strong>${card.spd}</strong></span>
     </div>
   `;
+
+  if (options.isKo) el.classList.add('ko');
+  return el;
 }
 
-// ── ログ ─────────────────────────────────────────────────
-function renderLog() {
-  const logEl = document.getElementById('battle-log');
-  if (!logEl) return;
-  logEl.innerHTML = state.log
-    .map(l => `<div class="log-line">${l}</div>`)
-    .join('');
+// ===== タイトル画面 =====
+
+document.getElementById('btn-start').addEventListener('click', () => {
+  startGame();
+  renderDrawScreen();
+  showScreen('screen-draw');
+});
+
+// ===== カードドロー画面 =====
+
+function renderDrawScreen() {
+  const list = document.getElementById('draw-card-list');
+  list.innerHTML = '';
+  GameState.deck.forEach(card => {
+    list.appendChild(createCatCardEl(card));
+  });
+  document.getElementById('draw-item-points').textContent = GameState.itemPoints;
 }
 
-// ── リザルトオーバーレイ ──────────────────────────────────
-function renderResult() {
-  const overlay = document.getElementById('result-overlay');
-  if (!overlay) return;
+document.getElementById('btn-draw-next').addEventListener('click', () => {
+  renderStageStartScreen();
+  showScreen('screen-stage-start');
+});
 
-  if (state.phase !== 'result') {
-    overlay.style.display = 'none';
-    return;
+// ===== ステージ開始画面 =====
+
+function renderStageStartScreen() {
+  const stage = GameState.currentStage;
+  const enemy = getEnemyByStage(stage);
+
+  document.getElementById('stage-number').textContent = stage;
+  document.getElementById('stage-enemy-name').textContent = enemy.name;
+  document.getElementById('stage-enemy-stats').innerHTML =
+    `HP: ${enemy.hp} ／ 魅了度初期値: ${enemy.initialCharmMeter} ／ SPD: ${enemy.spd}` +
+    (enemy.special === 'physical_immune' ? '<br><strong>特殊：物理攻撃無効</strong>' : '');
+}
+
+document.getElementById('btn-stage-to-prep').addEventListener('click', () => {
+  renderBattlePrepScreen();
+  showScreen('screen-battle-prep');
+});
+
+// ===== バトル準備画面 =====
+
+// 選択中のカードIDセット
+let prepSelectedIds = new Set();
+// 各カードの行動 { cardId: 'attack' | 'charm' }
+let prepCatActions = {};
+// 各カードのアイテム装備 { cardId: itemId | null }
+let prepEquippedItems = {};
+// 購入済みアイテムリスト（カードに装備可能な状態のもの）
+let purchasedItems = [];
+
+function renderBattlePrepScreen() {
+  prepSelectedIds = new Set();
+  prepCatActions = {};
+  prepEquippedItems = {};
+  purchasedItems = [];
+
+  // デッキから選択肢カードを表示
+  const list = document.getElementById('prep-card-list');
+  list.innerHTML = '';
+  GameState.deck.forEach(card => {
+    const el = createCatCardEl(card);
+    el.addEventListener('click', () => togglePrepCardSelect(card.id));
+    list.appendChild(el);
+  });
+
+  renderPrepItemShop();
+  renderPrepEquipArea();
+  renderPrepActionList();
+  updateBattleStartBtn();
+}
+
+// カード選択トグル
+function togglePrepCardSelect(cardId) {
+  if (prepSelectedIds.has(cardId)) {
+    prepSelectedIds.delete(cardId);
+  } else {
+    if (prepSelectedIds.size >= 3) return; // 3匹まで
+    prepSelectedIds.add(cardId);
   }
-  overlay.style.display = 'flex';
+  // 選択状態をDOMに反映
+  document.querySelectorAll('#prep-card-list .cat-card').forEach(el => {
+    if (prepSelectedIds.has(el.dataset.id)) {
+      el.classList.add('selected');
+    } else {
+      el.classList.remove('selected');
+    }
+  });
 
-  const map = {
-    win:  { title: '🎉 勝利！',    sub: '見事な戦いだった！', cls: 'win'  },
-    lose: { title: '💀 敗北…',    sub: 'また挑戦しよう',     cls: 'lose' },
-    draw: { title: '🤝 引き分け', sub: 'いい勝負だった',     cls: 'draw' },
-  };
-  const r = map[state.battleResult] || map.draw;
-  overlay.className = `result-overlay ${r.cls}`;
-  setText('result-title', r.title);
-  setText('result-sub',   r.sub);
+  renderPrepEquipArea();
+  renderPrepActionList();
+  updateBattleStartBtn();
 }
 
-// ── イベント初期化 ────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('skip-btn')
-    ?.addEventListener('click', skipTurn);
+// アイテムショップ表示
+function renderPrepItemShop() {
+  const shop = document.getElementById('prep-item-shop');
+  shop.innerHTML = '';
+  document.getElementById('prep-item-points').textContent = GameState.itemPoints;
 
-  document.getElementById('restart-btn')
-    ?.addEventListener('click', () => { initGame(); renderUI(); });
+  ITEMS.forEach(item => {
+    const btn = document.createElement('button');
+    btn.className = 'item-btn';
+    btn.disabled = item.cost > GameState.itemPoints;
+    btn.innerHTML =
+      `<strong>${item.name}</strong><br>${item.description}<br>` +
+      `<span class="item-cost">${item.cost}pt</span>`;
+    btn.addEventListener('click', () => {
+      if (buyItem(item.id)) {
+        purchasedItems.push(getItemById(item.id));
+        document.getElementById('prep-item-points').textContent = GameState.itemPoints;
+        renderPrepItemShop();   // ポイント更新後に再描画
+        renderPrepEquipArea();  // 装備セレクト更新
+      }
+    });
+    shop.appendChild(btn);
+  });
+}
 
-  initGame();
-  renderUI();
+// 装備エリア表示（選択中の猫ごとにセレクトボックス）
+function renderPrepEquipArea() {
+  const area = document.getElementById('prep-equip-area');
+  area.innerHTML = '';
+  if (prepSelectedIds.size === 0) return;
+
+  prepSelectedIds.forEach(cardId => {
+    const card = GameState.deck.find(c => c.id === cardId);
+    const row = document.createElement('div');
+    row.className = 'equip-row';
+
+    const nameEl = document.createElement('span');
+    nameEl.className = 'equip-cat-name';
+    nameEl.textContent = card.name;
+
+    const select = document.createElement('select');
+    // 「なし」オプション
+    const noneOpt = document.createElement('option');
+    noneOpt.value = '';
+    noneOpt.textContent = 'アイテムなし';
+    select.appendChild(noneOpt);
+
+    // 購入済みアイテムを選択肢に追加
+    purchasedItems.forEach(item => {
+      const opt = document.createElement('option');
+      opt.value = item.id;
+      opt.textContent = item.name;
+      if (prepEquippedItems[cardId] === item.id) opt.selected = true;
+      select.appendChild(opt);
+    });
+
+    select.addEventListener('change', () => {
+      prepEquippedItems[cardId] = select.value || null;
+    });
+
+    // 初期値反映
+    prepEquippedItems[cardId] = prepEquippedItems[cardId] || null;
+
+    row.appendChild(nameEl);
+    row.appendChild(select);
+    area.appendChild(row);
+  });
+}
+
+// 行動選択エリア表示
+function renderPrepActionList() {
+  const list = document.getElementById('prep-action-list');
+  list.innerHTML = '';
+
+  prepSelectedIds.forEach(cardId => {
+    const card = GameState.deck.find(c => c.id === cardId);
+    if (!prepCatActions[cardId]) prepCatActions[cardId] = 'attack';
+
+    const row = document.createElement('div');
+    row.className = 'action-row';
+
+    const nameEl = document.createElement('span');
+    nameEl.className = 'action-cat-name';
+    nameEl.textContent = card.name;
+
+    const toggle = document.createElement('div');
+    toggle.className = 'action-toggle';
+
+    const atkBtn = document.createElement('button');
+    atkBtn.textContent = '攻撃';
+    atkBtn.className = prepCatActions[cardId] === 'attack' ? 'active-attack' : '';
+
+    const charmBtn = document.createElement('button');
+    charmBtn.textContent = '魅了';
+    charmBtn.className = prepCatActions[cardId] === 'charm' ? 'active-charm' : '';
+
+    atkBtn.addEventListener('click', () => {
+      prepCatActions[cardId] = 'attack';
+      atkBtn.className = 'active-attack';
+      charmBtn.className = '';
+    });
+
+    charmBtn.addEventListener('click', () => {
+      prepCatActions[cardId] = 'charm';
+      charmBtn.className = 'active-charm';
+      atkBtn.className = '';
+    });
+
+    toggle.appendChild(atkBtn);
+    toggle.appendChild(charmBtn);
+    row.appendChild(nameEl);
+    row.appendChild(toggle);
+    list.appendChild(row);
+  });
+}
+
+// バトル開始ボタンの活性制御
+function updateBattleStartBtn() {
+  const btn = document.getElementById('btn-battle-start');
+  btn.disabled = prepSelectedIds.size < 3;
+}
+
+document.getElementById('btn-battle-start').addEventListener('click', () => {
+  const selectedIds = [...prepSelectedIds];
+  prepareBattle(selectedIds, prepCatActions, prepEquippedItems);
+  renderBattleScreen();
+  showScreen('screen-battle');
+});
+
+// ===== バトル画面 =====
+
+function renderBattleScreen() {
+  const b = GameState.battle;
+
+  // 敵情報
+  document.getElementById('battle-enemy-name').textContent = b.enemy.name;
+  updateEnemyGauges();
+
+  // 猫ステータス
+  renderBattleCats();
+
+  // ログクリア
+  const logEl = document.getElementById('battle-log');
+  logEl.innerHTML = '';
+  appendLogs(b.log);
+  b.log = []; // 初期ログ（アイテム発動等）を表示後リセット
+
+  // ボタン状態
+  const nextBtn = document.getElementById('btn-next-round');
+  nextBtn.textContent = '次のラウンドへ';
+  nextBtn.disabled = false;
+}
+
+// 敵HPゲージ・魅了度ゲージを更新
+function updateEnemyGauges() {
+  const b = GameState.battle;
+
+  const hpPct = Math.max(0, (b.enemy.hp / b.enemy.maxHp) * 100);
+  document.getElementById('battle-enemy-hp-bar').style.width = hpPct + '%';
+  document.getElementById('battle-enemy-hp-text').textContent =
+    `${b.enemy.hp}/${b.enemy.maxHp}`;
+
+  const charmPct = Math.min(100, b.enemyCharmMeter);
+  document.getElementById('battle-enemy-charm-bar').style.width = charmPct + '%';
+  document.getElementById('battle-enemy-charm-text').textContent =
+    `${b.enemyCharmMeter}/100`;
+}
+
+// バトル中の猫カードを描画
+function renderBattleCats() {
+  const b = GameState.battle;
+  const area = document.getElementById('battle-cat-area');
+  area.innerHTML = '';
+
+  b.cats.forEach(cat => {
+    const isKo = cat.hp <= 0;
+    const action = b.catActions[cat.id];
+    const hpPct = Math.max(0, (cat.hp / cat.maxHp) * 100);
+
+    const div = document.createElement('div');
+    div.className = 'battle-cat-card' + (isKo ? ' ko' : '');
+    div.innerHTML = `
+      <div class="bcat-name">${cat.name}</div>
+      <div class="bcat-hp-wrap">
+        <span>HP</span>
+        <div class="gauge-bar" style="flex:1">
+          <div class="gauge-fill hp-fill" style="width:${hpPct}%"></div>
+        </div>
+        <span>${cat.hp}/${cat.maxHp}</span>
+      </div>
+      <div class="bcat-action">行動: ${action === 'attack' ? '攻撃' : '魅了'}${isKo ? '（戦闘不能）' : ''}</div>
+    `;
+    area.appendChild(div);
+  });
+}
+
+// ログ行をバトルログに追記
+function appendLogs(lines) {
+  const logEl = document.getElementById('battle-log');
+  lines.forEach(line => {
+    const p = document.createElement('p');
+    if (line.startsWith('===')) {
+      p.className = 'log-round';
+    }
+    p.textContent = line;
+    logEl.appendChild(p);
+  });
+  // 最下部へスクロール
+  logEl.scrollTop = logEl.scrollHeight;
+}
+
+// 「次のラウンドへ」ボタン
+document.getElementById('btn-next-round').addEventListener('click', () => {
+  const b = GameState.battle;
+  if (!b || b.result) return;
+
+  executeRound();
+
+  // ログ表示
+  appendLogs(b.log);
+  b.log = [];
+
+  // ゲージ・猫状態を更新
+  updateEnemyGauges();
+  renderBattleCats();
+
+  // 勝敗確認
+  if (b.result === 'win_hp' || b.result === 'win_charm') {
+    document.getElementById('btn-next-round').textContent = 'クリア！';
+    document.getElementById('btn-next-round').disabled = true;
+    setTimeout(() => {
+      renderStageClearScreen();
+      showScreen('screen-stage-clear');
+    }, 1200);
+  } else if (b.result === 'lose') {
+    document.getElementById('btn-next-round').textContent = 'ゲームオーバー…';
+    document.getElementById('btn-next-round').disabled = true;
+    setTimeout(() => {
+      showScreen('screen-gameover');
+    }, 1200);
+  }
+});
+
+// ===== ステージクリア画面 =====
+
+function renderStageClearScreen() {
+  const b = GameState.battle;
+  const winMsg = b.result === 'win_charm'
+    ? `${b.enemy.name}を魅了した！`
+    : `${b.enemy.name}を撃破した！`;
+  document.getElementById('stage-clear-msg').textContent = winMsg;
+}
+
+document.getElementById('btn-reward-hp').addEventListener('click', () => {
+  applyStageReward('hp');
+  advanceToNextStageOrEnding();
+});
+
+document.getElementById('btn-reward-points').addEventListener('click', () => {
+  applyStageReward('points');
+  advanceToNextStageOrEnding();
+});
+
+// 報酬選択後の遷移
+function advanceToNextStageOrEnding() {
+  advanceStage();
+  if (isGameClear()) {
+    showScreen('screen-ending');
+  } else {
+    renderStageStartScreen();
+    showScreen('screen-stage-start');
+  }
+}
+
+// ===== ゲームオーバー画面 =====
+
+document.getElementById('btn-retry').addEventListener('click', () => {
+  showScreen('screen-title');
+});
+
+// ===== エンディング画面 =====
+
+document.getElementById('btn-ending-title').addEventListener('click', () => {
+  showScreen('screen-title');
 });
