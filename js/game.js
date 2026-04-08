@@ -394,13 +394,21 @@ function tickDebuffs() {
 
 // choice: 'hp' (HP50%回復) | 'points' (アイテムポイント+8)
 function applyStageReward(choice) {
+  // 報酬選択に関わらず、バトル中のHPダメージをデッキカードに反映する
+  GameState.battle.cats.forEach(battleCat => {
+    const deckCard = GameState.deck.find(c => c.id === battleCat.id);
+    if (deckCard) {
+      deckCard.hp = battleCat.hp;
+    }
+  });
+
   if (choice === 'hp') {
     // 出撃した3匹（deck内の該当カード）のHPを50%回復
     GameState.battle.cats.forEach(battleCat => {
       const deckCard = GameState.deck.find(c => c.id === battleCat.id);
       if (deckCard) {
         const heal = Math.floor(deckCard.maxHp * 0.5);
-        deckCard.hp = Math.min(deckCard.maxHp, battleCat.hp + heal);
+        deckCard.hp = Math.min(deckCard.maxHp, deckCard.hp + heal);
       }
     });
   } else if (choice === 'points') {
