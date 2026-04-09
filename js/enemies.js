@@ -2,47 +2,53 @@
 // 仕様書 spec-v0.4.md の人間キャラクター表・攻撃効果表に準拠
 
 // 人間の攻撃定義
+// hpDamage: 常に適用されるHPダメージ
+// effect: 追加効果（なしの場合は null）
 const HUMAN_ATTACKS = {
   shampoo: {
     id: 'shampoo',
     name: 'シャンプー攻撃',
-    // 対象猫のHPを-8
-    effect: { type: 'damage_hp', value: 8 },
+    hpDamage: 12,
+    effect: null,
   },
   nail_clip: {
     id: 'nail_clip',
     name: '爪切り攻撃',
-    // 対象猫のATKを-3（2ラウンド継続デバフ）
+    hpDamage: 8,
+    // 追加効果：ATK -3（2ラウンド）
     effect: { type: 'debuff_atk', value: -3, duration: 2 },
   },
   vacuum: {
     id: 'vacuum',
     name: '掃除機攻撃',
-    // 対象猫のHPを-15
-    effect: { type: 'damage_hp', value: 15 },
+    hpDamage: 15,
+    effect: null,
   },
   ignore: {
     id: 'ignore',
     name: '無視攻撃',
-    // 対象猫のCHARMを-5（2ラウンド継続デバフ）
+    hpDamage: 8,
+    // 追加効果：CHARM -5（2ラウンド）
     effect: { type: 'debuff_charm', value: -5, duration: 2 },
   },
   stench: {
     id: 'stench',
     name: '悪臭攻撃',
-    // 人間の魅了度を-8（猫側が積み上げた魅了度を減らす）
+    hpDamage: 8,
+    // 追加効果：魅了度 -8
     effect: { type: 'damage_charm_meter', value: 8 },
   },
   annoying: {
     id: 'annoying',
     name: 'ウザイ絡み攻撃',
-    // 効果なし
-    effect: { type: 'none' },
+    hpDamage: 8,
+    effect: null,
   },
   loud_noise: {
     id: 'loud_noise',
     name: '爆音攻撃',
-    // 対象猫のSPDを-4（2ラウンド継続デバフ）
+    hpDamage: 12,
+    // 追加効果：SPD -4（2ラウンド）
     effect: { type: 'debuff_spd', value: -4, duration: 2 },
   },
 };

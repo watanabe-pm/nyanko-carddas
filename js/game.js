@@ -265,25 +265,24 @@ function executeEnemyTurn() {
 }
 
 // 人間の攻撃効果を適用（アイテム判定含む）
+// 全攻撃は hpDamage（HP削り）を持ち、effect（追加効果）は null の場合もある
 function applyHumanAttack(attack, targetCat) {
   const b = GameState.battle;
   const itemSt = b.itemState[targetCat.id];
   const item = itemSt && itemSt.itemId ? getItemById(itemSt.itemId) : null;
 
-  // カラー（反射）チェック
+  // カラー（反射）チェック：攻撃ごと全体を反射してスキップ
   if (item && item.id === 'collar' && !itemSt.used && itemSt.charges > 0) {
     itemSt.charges--;
     if (itemSt.charges === 0) itemSt.used = true;
-    // 反射：ダメージ系攻撃なら敵に同ダメージ
     b.log.push(`${targetCat.name}のカラーが反射！`);
-    if (attack.effect.type === 'damage_hp') {
-      b.enemy.hp = Math.max(0, b.enemy.hp - attack.effect.value);
-      b.log.push(`敵に ${attack.effect.value} ダメージ（残りHP: ${b.enemy.hp}）`);
-    }
+    // HPダメージを敵に反射
+    b.enemy.hp = Math.max(0, b.enemy.hp - attack.hpDamage);
+    b.log.push(`敵に ${attack.hpDamage} ダメージ（残りHP: ${b.enemy.hp}）`);
     return;
   }
 
-  // キャットタワー（回避）チェック
+  // キャットタワー（回避）チェック：攻撃ごと全体を回避してスキップ
   if (item && item.id === 'cat_tower' && !itemSt.used && itemSt.charges > 0) {
     itemSt.charges--;
     if (itemSt.charges === 0) itemSt.used = true;
@@ -291,18 +290,19 @@ function applyHumanAttack(attack, targetCat) {
     return;
   }
 
-  // 攻撃効果を適用
-  const effect = attack.effect;
+  // ① HPダメージを適用（全攻撃共通）
+  targetCat.hp = Math.max(0, targetCat.hp - attack.hpDamage);
+  b.log.push(`${targetCat.name}に ${attack.hpDamage} ダメージ（残りHP: ${targetCat.hp}）`);
+  // 戦闘不能になったらちゅーるチェック
+  if (targetCat.hp === 0) {
+    tryChuru(targetCat);
+  }
 
-  if (effect.type === 'damage_hp') {
-    // ちゅーる（戦闘不能時復活）の判定は適用後に行う
-    targetCat.hp = Math.max(0, targetCat.hp - effect.value);
-    b.log.push(`${targetCat.name}に ${effect.value} ダメージ（残りHP: ${targetCat.hp}）`);
-    // 戦闘不能になったらちゅーるチェック
-    if (targetCat.hp === 0) {
-      tryChuru(targetCat);
-    }
-  } else if (effect.type === 'damage_charm_meter') {
+  // ② 追加効果を適用（null の場合はスキップ）
+  const effect = attack.effect;
+  if (!effect) return;
+
+  if (effect.type === 'damage_charm_meter') {
     b.enemyCharmMeter = Math.max(0, b.enemyCharmMeter - effect.value);
     b.log.push(`魅了度が -${effect.value}（合計: ${b.enemyCharmMeter}）`);
   } else if (
@@ -326,8 +326,6 @@ function applyHumanAttack(attack, targetCat) {
     b.log.push(
       `${targetCat.name}に${getDebuffLabel(effect.type)} ${effect.value}（${effect.duration}ラウンド）`
     );
-  } else if (effect.type === 'none') {
-    b.log.push('効果なし…');
   }
 }
 
