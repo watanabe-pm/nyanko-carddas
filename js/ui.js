@@ -453,7 +453,7 @@ function renderBattleScreen() {
   const initLogs = [...b.log];
   b.log = [];
   displayLogsSequentially(initLogs, () => {
-    setTimeout(runNextRound, 600);
+    setTimeout(startBattleLoop, 600);
   });
 }
 
@@ -515,7 +515,6 @@ function displayLogsSequentially(lines, onComplete) {
     }
     const line = lines[i++];
     const p = document.createElement('p');
-    if (line.startsWith('===')) p.className = 'log-round';
     p.textContent = line;
     logEl.appendChild(p);
     logEl.scrollTop = logEl.scrollHeight;
@@ -524,12 +523,18 @@ function displayLogsSequentially(lines, onComplete) {
   showNext();
 }
 
-// 1ラウンド実行してログ逐次表示→次ラウンドまたは終了処理
-function runNextRound() {
-  const b = GameState.battle;
-  if (!b || b.result) return;
+// バトルループ開始（最初のラウンドを準備して最初の行動へ）
+function startBattleLoop() {
+  startNewRound();
+  processNextAction();
+}
 
-  executeRound();
+// 1アクション実行 → ログ表示 → UI更新 → 次へ
+function processNextAction() {
+  const b = GameState.battle;
+  if (!b) return;
+
+  const status = executeOneAction();
 
   const logs = [...b.log];
   b.log = [];
@@ -538,11 +543,17 @@ function runNextRound() {
     updateEnemyGauges();
     renderBattleCats();
 
-    if (b.result) {
+    if (status === 'battle_end') {
       handleBattleEnd();
+    } else if (status === 'round_end') {
+      // ラウンド終了 → 少し待って次ラウンドを開始
+      setTimeout(() => {
+        startNewRound();
+        processNextAction();
+      }, 600);
     } else {
-      // 次のラウンドまで少し間隔を空ける
-      setTimeout(runNextRound, 600);
+      // 次のアクションへ
+      setTimeout(processNextAction, 200);
     }
   });
 }

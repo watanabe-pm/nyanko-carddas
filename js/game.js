@@ -126,34 +126,40 @@ function applyBattleStartItems() {
   });
 }
 
-// ===== 1ラウンド実行 =====
+// ===== 1行動ずつ実行 =====
 
-function executeRound() {
+// 新ラウンドのターン順を構築してインデックスをリセットする
+function startNewRound() {
   const b = GameState.battle;
-  if (!b || b.result) return;
-
   b.roundCount++;
-  b.log.push(`=== ラウンド ${b.roundCount} ===`);
-
-  // SPD順ターン順を構築（デバフ適用後の実効SPDで計算）
   buildTurnOrder();
+  b.turnIndex = 0;
+}
 
-  // 各アクターのターンを順番に実行
-  for (const actor of b.turnOrder) {
-    if (b.result) break; // バトル終了済みならスキップ
+// 1アクターの行動を実行する
+// 戻り値: 'action'（行動実行）| 'round_end'（全員終了）| 'battle_end'（バトル終了）
+function executeOneAction() {
+  const b = GameState.battle;
+  if (!b || b.result) return 'battle_end';
 
-    if (actor.type === 'cat') {
-      executeCatTurn(actor.id);
-    } else if (actor.type === 'enemy') {
-      executeEnemyTurn();
-    }
-
-    // 勝敗チェック
-    checkBattleResult();
+  // 全アクター終了 → デバフカウントダウンしてラウンド終了
+  if (b.turnIndex >= b.turnOrder.length) {
+    tickDebuffs();
+    return 'round_end';
   }
 
-  // ラウンド終了時：デバフの残りターンを減らす
-  tickDebuffs();
+  const actor = b.turnOrder[b.turnIndex];
+  b.turnIndex++;
+
+  if (actor.type === 'cat') {
+    executeCatTurn(actor.id);
+  } else if (actor.type === 'enemy') {
+    executeEnemyTurn();
+  }
+
+  checkBattleResult();
+
+  return b.result ? 'battle_end' : 'action';
 }
 
 // SPD順でターン順リストを構築
