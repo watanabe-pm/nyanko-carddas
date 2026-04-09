@@ -28,6 +28,17 @@
     </div>
   </div>
 
+  <!-- ===== 猫選択画面 ===== -->
+  <div id="screen-cat-select" class="screen">
+    <div class="screen-inner">
+      <h2 class="screen-title">猫を選んでください</h2>
+      <p class="screen-desc">出撃する3匹を選んでください</p>
+      <div id="cat-select-list" class="card-list selectable"></div>
+      <div id="cat-select-preview" class="cat-select-preview"></div>
+      <button id="btn-cat-select-confirm" class="btn btn-primary" disabled>決定</button>
+    </div>
+  </div>
+
   <!-- ===== ステージ開始画面 ===== -->
   <div id="screen-stage-start" class="screen">
     <div class="screen-inner">
@@ -47,8 +58,8 @@
 
       <!-- 猫選択 -->
       <section class="prep-section">
-        <h3 class="prep-label">出撃する猫を3匹選んでください</h3>
-        <div id="prep-card-list" class="card-list selectable"></div>
+        <h3 class="prep-label" id="prep-cat-label">出撃する猫</h3>
+        <div id="prep-card-list" class="card-list"></div>
       </section>
 
       <!-- アイテム購入・装備 -->

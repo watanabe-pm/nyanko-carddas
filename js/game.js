@@ -12,6 +12,8 @@ const GameState = {
   currentStage: 1,
   // 各カードに装備中のアイテム { cardId: itemId }
   equippedItems: {},
+  // 猫選択画面で選んだ3匹のカードID（全ステージ固定）
+  selectedCatIds: [],
   // バトル中の状態
   battle: null,
 };
@@ -45,6 +47,7 @@ function startGame() {
   GameState.itemPoints = points;
   GameState.currentStage = 1;
   GameState.equippedItems = {};
+  GameState.selectedCatIds = [];
   GameState.battle = null;
 }
 

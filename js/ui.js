@@ -147,6 +147,79 @@ function renderDrawScreen() {
 }
 
 document.getElementById('btn-draw-next').addEventListener('click', () => {
+  // ステージ1のみ猫選択画面へ、2戦目以降はスキップ
+  if (GameState.selectedCatIds.length === 0) {
+    renderCatSelectScreen();
+    showScreen('screen-cat-select');
+  } else {
+    renderStageStartScreen();
+    showScreen('screen-stage-start');
+  }
+});
+
+// ===== 猫選択画面 =====
+
+// 選択中のカードIDセット（猫選択画面専用）
+let catSelectIds = new Set();
+
+// 選択済みカードをプレビューエリアに表示
+function renderCatSelectPreview() {
+  const area = document.getElementById('cat-select-preview');
+  area.innerHTML = '';
+  if (catSelectIds.size === 0) return;
+
+  const label = document.createElement('p');
+  label.className = 'cat-select-preview-label';
+  label.textContent = `選択中 ${catSelectIds.size} / 3`;
+  area.appendChild(label);
+
+  catSelectIds.forEach(id => {
+    const card = GameState.deck.find(c => c.id === id);
+    area.appendChild(createCatCardEl(card));
+  });
+}
+
+function renderCatSelectScreen() {
+  catSelectIds = new Set();
+  updateCatSelectConfirmBtn();
+  renderCatSelectPreview();
+
+  const list = document.getElementById('cat-select-list');
+  list.innerHTML = '';
+
+  // 上段3枚・下段2枚のレイアウト
+  const topRow = document.createElement('div');
+  topRow.className = 'draw-row';
+  const bottomRow = document.createElement('div');
+  bottomRow.className = 'draw-row';
+  list.appendChild(topRow);
+  list.appendChild(bottomRow);
+
+  GameState.deck.forEach((card, index) => {
+    const el = createCatCardEl(card);
+    el.addEventListener('click', () => {
+      if (catSelectIds.has(card.id)) {
+        catSelectIds.delete(card.id);
+        el.classList.remove('selected');
+      } else {
+        if (catSelectIds.size >= 3) return;
+        catSelectIds.add(card.id);
+        el.classList.add('selected');
+      }
+      updateCatSelectConfirmBtn();
+      renderCatSelectPreview();
+    });
+    const row = index < 3 ? topRow : bottomRow;
+    row.appendChild(el);
+  });
+}
+
+function updateCatSelectConfirmBtn() {
+  document.getElementById('btn-cat-select-confirm').disabled = catSelectIds.size < 3;
+}
+
+document.getElementById('btn-cat-select-confirm').addEventListener('click', () => {
+  GameState.selectedCatIds = [...catSelectIds];
   renderStageStartScreen();
   showScreen('screen-stage-start');
 });
@@ -181,25 +254,22 @@ let prepEquippedItems = {};
 let purchasedItems = {};
 
 function renderBattlePrepScreen() {
-  prepSelectedIds = new Set();
+  // 猫選択画面で選んだ3匹を固定で使用
+  prepSelectedIds = new Set(GameState.selectedCatIds);
   prepCatActions = {};
   prepEquippedItems = {};
   purchasedItems = {};
 
-  // デッキから選択肢カードを上段3枚・下段2枚で表示
+  // 選択済みの3匹を1行で表示（選択操作なし）
   const list = document.getElementById('prep-card-list');
   list.innerHTML = '';
-  const topRow = document.createElement('div');
-  topRow.className = 'draw-row';
-  const bottomRow = document.createElement('div');
-  bottomRow.className = 'draw-row';
-  list.appendChild(topRow);
-  list.appendChild(bottomRow);
+  const row = document.createElement('div');
+  row.className = 'draw-row';
+  list.appendChild(row);
 
-  GameState.deck.forEach((card, index) => {
+  GameState.selectedCatIds.forEach(id => {
+    const card = GameState.deck.find(c => c.id === id);
     const el = createCatCardEl(card);
-    el.addEventListener('click', () => togglePrepCardSelect(card.id));
-    const row = index < 3 ? topRow : bottomRow;
     row.appendChild(el);
   });
 
