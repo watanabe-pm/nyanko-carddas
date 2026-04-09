@@ -49,7 +49,7 @@ html, body {
 
 .screen-inner {
   width: 100%;
-  max-width: 640px;
+  max-width: 720px;
   padding: 24px 16px 48px;
   display: flex;
   flex-direction: column;
@@ -149,27 +149,28 @@ html, body {
   border: 2px solid var(--color-border);
   border-radius: var(--radius);
   padding: 12px 10px;
-  width: 130px;
+  /* 横幅を最大化：画面幅から余白・ギャップを引いて3等分、上限220px */
+  width: min(calc((100vw - 52px) / 3), 220px);
   cursor: default;
   transition: border-color var(--transition), transform var(--transition);
   position: relative;
 }
 
 .cat-card .card-rarity {
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 1px;
   margin-bottom: 4px;
 }
 
 .cat-card .card-name {
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-weight: 700;
   margin-bottom: 8px;
 }
 
 .cat-card .card-stats {
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   color: var(--color-text-sub);
   display: flex;
   flex-direction: column;
@@ -662,10 +663,6 @@ html, body {
 @media (max-width: 480px) {
   .title-main {
     font-size: 2rem;
-  }
-
-  .cat-card {
-    width: 110px;
   }
 
   .battle-cat-card {
