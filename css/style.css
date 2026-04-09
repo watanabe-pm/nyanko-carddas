@@ -210,6 +210,75 @@ html, body {
   cursor: not-allowed;
 }
 
+/* ===== ドロー画面レイアウト ===== */
+
+/* カードリストをカラム方向に変更（上段3枚・下段2枚の行を縦に並べる） */
+#draw-card-list,
+#prep-card-list {
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 各行：カードを中央寄せで横並び */
+.draw-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* カード名が長くても崩れないよう省略表示 */
+.cat-card .card-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* ===== カードドロー演出 ===== */
+
+/* フリップラッパー：perspective コンテナ兼フェードイン */
+.card-flip-wrapper {
+  perspective: 800px;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.card-flip-wrapper.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 3D 回転させる内側の平面：裏向き（180deg）からスタート */
+.card-flip-inner {
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateY(180deg);
+  transition: transform 0.5s ease;
+}
+
+.card-flip-wrapper.flipped .card-flip-inner {
+  transform: rotateY(0deg);
+}
+
+/* 表面（既存の cat-card を流用） */
+.card-flip-inner .cat-card {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* 裏面：カードと同サイズで絶対配置 */
+.card-flip-back {
+  position: absolute;
+  inset: 0;
+  background: var(--color-card);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  /* 裏面は inner の 180deg に対してさらに 180deg 回転させ、視聴者方向を向かせる */
+  transform: rotateY(180deg);
+}
+
 /* ===== ドロー画面 アイテムポイント ===== */
 .item-points-display {
   text-align: center;

@@ -55,10 +55,47 @@ document.getElementById('btn-start').addEventListener('click', () => {
 function renderDrawScreen() {
   const list = document.getElementById('draw-card-list');
   list.innerHTML = '';
-  GameState.deck.forEach(card => {
-    list.appendChild(createCatCardEl(card));
-  });
   document.getElementById('draw-item-points').textContent = GameState.itemPoints;
+
+  // 上段3枚・下段2枚のレイアウト用の行を用意
+  const topRow = document.createElement('div');
+  topRow.className = 'draw-row';
+  const bottomRow = document.createElement('div');
+  bottomRow.className = 'draw-row';
+  list.appendChild(topRow);
+  list.appendChild(bottomRow);
+
+  GameState.deck.forEach((card, index) => {
+    // フリップ構造を構築
+    const wrapper = document.createElement('div');
+    wrapper.className = 'card-flip-wrapper';
+
+    const inner = document.createElement('div');
+    inner.className = 'card-flip-inner';
+
+    // 裏面
+    const back = document.createElement('div');
+    back.className = 'card-flip-back';
+
+    // 表面（既存の関数で生成）
+    const front = createCatCardEl(card);
+
+    inner.appendChild(back);
+    inner.appendChild(front);
+    wrapper.appendChild(inner);
+
+    // 0〜2枚目は上段、3〜4枚目は下段
+    const row = index < 3 ? topRow : bottomRow;
+    row.appendChild(wrapper);
+
+    // 300ms間隔で1枚ずつ裏向きで出現 → 200ms後にフリップ
+    setTimeout(() => {
+      wrapper.classList.add('revealed');
+      setTimeout(() => {
+        wrapper.classList.add('flipped');
+      }, 200);
+    }, index * 300);
+  });
 }
 
 document.getElementById('btn-draw-next').addEventListener('click', () => {
@@ -101,13 +138,21 @@ function renderBattlePrepScreen() {
   prepEquippedItems = {};
   purchasedItems = {};
 
-  // デッキから選択肢カードを表示
+  // デッキから選択肢カードを上段3枚・下段2枚で表示
   const list = document.getElementById('prep-card-list');
   list.innerHTML = '';
-  GameState.deck.forEach(card => {
+  const topRow = document.createElement('div');
+  topRow.className = 'draw-row';
+  const bottomRow = document.createElement('div');
+  bottomRow.className = 'draw-row';
+  list.appendChild(topRow);
+  list.appendChild(bottomRow);
+
+  GameState.deck.forEach((card, index) => {
     const el = createCatCardEl(card);
     el.addEventListener('click', () => togglePrepCardSelect(card.id));
-    list.appendChild(el);
+    const row = index < 3 ? topRow : bottomRow;
+    row.appendChild(el);
   });
 
   renderPrepItemShop();
