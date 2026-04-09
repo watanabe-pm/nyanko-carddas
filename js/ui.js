@@ -263,21 +263,8 @@ function renderBattlePrepScreen() {
   prepTeamAction = 'attack'; // デフォルトは攻撃主体
   purchasedItems = {};
 
-  // 選択済みの3匹を1行で表示（選択操作なし）
-  const list = document.getElementById('prep-card-list');
-  list.innerHTML = '';
-  const row = document.createElement('div');
-  row.className = 'draw-row';
-  list.appendChild(row);
-
-  GameState.selectedCatIds.forEach(id => {
-    const card = GameState.deck.find(c => c.id === id);
-    const el = createCatCardEl(card);
-    row.appendChild(el);
-  });
-
   renderPrepItemShop();
-  renderPrepEquipArea();
+  renderPrepEquipArea(); // カードと装備セレクトを一体で描画
   renderPrepActionList();
   updateBattleStartBtn();
 }
@@ -340,23 +327,29 @@ function getItemAvailableCount(itemId, excludeCardId) {
   return total - usedByOthers;
 }
 
-// 装備エリア表示（選択中の猫ごとにセレクトボックス）
+// 猫カードと装備セレクトを一体で #prep-card-list に描画
 function renderPrepEquipArea() {
-  const area = document.getElementById('prep-equip-area');
-  area.innerHTML = '';
-  if (prepSelectedIds.size === 0) return;
+  const list = document.getElementById('prep-card-list');
+  list.innerHTML = '';
 
-  prepSelectedIds.forEach(cardId => {
+  const row = document.createElement('div');
+  row.className = 'draw-row';
+  list.appendChild(row);
+
+  GameState.selectedCatIds.forEach(cardId => {
     const card = GameState.deck.find(c => c.id === cardId);
-    const row = document.createElement('div');
-    row.className = 'equip-row';
 
-    const nameEl = document.createElement('span');
-    nameEl.className = 'equip-cat-name';
-    nameEl.textContent = card.name;
+    // スロット：猫カード + 装備セレクトを縦に並べる
+    const slot = document.createElement('div');
+    slot.className = 'cat-equip-slot';
 
+    // 猫カード（表示のみ）
+    slot.appendChild(createCatCardEl(card));
+
+    // 装備セレクト
     const select = document.createElement('select');
-    // 「なし」オプション
+    select.className = 'equip-select';
+
     const noneOpt = document.createElement('option');
     noneOpt.value = '';
     noneOpt.textContent = 'アイテムなし';
@@ -366,7 +359,6 @@ function renderPrepEquipArea() {
     Object.keys(purchasedItems).forEach(itemId => {
       const isEquippedHere = prepEquippedItems[cardId] === itemId;
       const available = getItemAvailableCount(itemId, cardId);
-      // 在庫ゼロかつ自分が装備していない場合はスキップ
       if (available <= 0 && !isEquippedHere) return;
 
       const item = getItemById(itemId);
@@ -379,16 +371,14 @@ function renderPrepEquipArea() {
 
     select.addEventListener('change', () => {
       prepEquippedItems[cardId] = select.value || null;
-      // 他の猫の選択肢に在庫変更を反映する
+      // 在庫変更を全猫のセレクトに反映
       renderPrepEquipArea();
     });
 
-    // 初期値反映
     if (prepEquippedItems[cardId] === undefined) prepEquippedItems[cardId] = null;
 
-    row.appendChild(nameEl);
-    row.appendChild(select);
-    area.appendChild(row);
+    slot.appendChild(select);
+    row.appendChild(slot);
   });
 }
 
