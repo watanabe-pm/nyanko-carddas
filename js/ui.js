@@ -52,6 +52,31 @@ document.getElementById('btn-start').addEventListener('click', () => {
 
 // ===== カードドロー画面 =====
 
+// 画面フラッシュエフェクト（SR: 白、LR: 金）
+function showFlash(type) {
+  const el = document.createElement('div');
+  el.className = `flash-overlay flash-${type}`;
+  document.body.appendChild(el);
+  el.addEventListener('animationend', () => el.remove());
+}
+
+// 金色パーティクルエフェクト（LR専用）
+function showParticles() {
+  const count = 24;
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('div');
+    el.className = 'particle';
+    const size = 4 + Math.random() * 8;
+    el.style.width = size + 'px';
+    el.style.height = size + 'px';
+    el.style.left = (10 + Math.random() * 80) + 'vw';
+    el.style.top = (30 + Math.random() * 40) + 'vh';
+    el.style.animationDelay = (Math.random() * 0.4) + 's';
+    document.body.appendChild(el);
+    el.addEventListener('animationend', () => el.remove());
+  }
+}
+
 function renderDrawScreen() {
   const list = document.getElementById('draw-card-list');
   list.innerHTML = '';
@@ -64,6 +89,9 @@ function renderDrawScreen() {
   bottomRow.className = 'draw-row';
   list.appendChild(topRow);
   list.appendChild(bottomRow);
+
+  // SR/LRはフリップ前に演出を挟むため累積ディレイで管理
+  let delay = 0;
 
   GameState.deck.forEach((card, index) => {
     // フリップ構造を構築
@@ -88,13 +116,33 @@ function renderDrawScreen() {
     const row = index < 3 ? topRow : bottomRow;
     row.appendChild(wrapper);
 
-    // 300ms間隔で1枚ずつ裏向きで出現 → 200ms後にフリップ
+    const isSR = card.rarity === 'SR';
+    const isLR = card.rarity === 'LR';
+    const cardDelay = delay;
+
     setTimeout(() => {
+      // 裏向きで出現
       wrapper.classList.add('revealed');
-      setTimeout(() => {
-        wrapper.classList.add('flipped');
-      }, 200);
-    }, index * 300);
+
+      if (isSR || isLR) {
+        // レアリティ演出：出現150ms後にフラッシュ→400ms後にフリップ
+        setTimeout(() => {
+          showFlash(isLR ? 'lr' : 'sr');
+          if (isLR) showParticles();
+          setTimeout(() => {
+            wrapper.classList.add('flipped');
+          }, 400);
+        }, 150);
+      } else {
+        // N/R：200ms後に即フリップ
+        setTimeout(() => {
+          wrapper.classList.add('flipped');
+        }, 200);
+      }
+    }, cardDelay);
+
+    // レアリティに応じて次のカードまでの間隔を設定
+    delay += isLR ? 2000 : isSR ? 1500 : 600;
   });
 }
 
