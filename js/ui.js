@@ -148,9 +148,11 @@ function renderPrepItemShop() {
     const btn = document.createElement('button');
     btn.className = 'item-btn';
     btn.disabled = item.cost > GameState.itemPoints;
+    const owned = purchasedItems[item.id] || 0;
     btn.innerHTML =
       `<strong>${item.name}</strong><br>${item.description}<br>` +
-      `<span class="item-cost">${item.cost}pt</span>`;
+      `<span class="item-cost">${item.cost}pt</span>` +
+      `<span class="item-owned">所持: ${owned}個</span>`;
     btn.addEventListener('click', () => {
       if (buyItem(item.id)) {
         purchasedItems[item.id] = (purchasedItems[item.id] || 0) + 1;
