@@ -92,14 +92,14 @@ let prepSelectedIds = new Set();
 let prepCatActions = {};
 // 各カードのアイテム装備 { cardId: itemId | null }
 let prepEquippedItems = {};
-// 購入済みアイテムリスト（カードに装備可能な状態のもの）
-let purchasedItems = [];
+// 購入済みアイテム在庫数 { itemId: count }
+let purchasedItems = {};
 
 function renderBattlePrepScreen() {
   prepSelectedIds = new Set();
   prepCatActions = {};
   prepEquippedItems = {};
-  purchasedItems = [];
+  purchasedItems = {};
 
   // デッキから選択肢カードを表示
   const list = document.getElementById('prep-card-list');
@@ -153,7 +153,7 @@ function renderPrepItemShop() {
       `<span class="item-cost">${item.cost}pt</span>`;
     btn.addEventListener('click', () => {
       if (buyItem(item.id)) {
-        purchasedItems.push(getItemById(item.id));
+        purchasedItems[item.id] = (purchasedItems[item.id] || 0) + 1;
         document.getElementById('prep-item-points').textContent = GameState.itemPoints;
         renderPrepItemShop();   // ポイント更新後に再描画
         renderPrepEquipArea();  // 装備セレクト更新
@@ -161,6 +161,15 @@ function renderPrepItemShop() {
     });
     shop.appendChild(btn);
   });
+}
+
+// 指定カード以外の装備を除いた残り在庫数を返す
+function getItemAvailableCount(itemId, excludeCardId) {
+  const total = purchasedItems[itemId] || 0;
+  const usedByOthers = [...prepSelectedIds]
+    .filter(id => id !== excludeCardId && prepEquippedItems[id] === itemId)
+    .length;
+  return total - usedByOthers;
 }
 
 // 装備エリア表示（選択中の猫ごとにセレクトボックス）
@@ -185,21 +194,29 @@ function renderPrepEquipArea() {
     noneOpt.textContent = 'アイテムなし';
     select.appendChild(noneOpt);
 
-    // 購入済みアイテムを選択肢に追加
-    purchasedItems.forEach(item => {
+    // 在庫があるアイテムのみ選択肢に追加（自分が装備中のものは常に表示）
+    Object.keys(purchasedItems).forEach(itemId => {
+      const isEquippedHere = prepEquippedItems[cardId] === itemId;
+      const available = getItemAvailableCount(itemId, cardId);
+      // 在庫ゼロかつ自分が装備していない場合はスキップ
+      if (available <= 0 && !isEquippedHere) return;
+
+      const item = getItemById(itemId);
       const opt = document.createElement('option');
-      opt.value = item.id;
-      opt.textContent = item.name;
-      if (prepEquippedItems[cardId] === item.id) opt.selected = true;
+      opt.value = itemId;
+      opt.textContent = available > 1 ? `${item.name}（残り${available}）` : item.name;
+      if (isEquippedHere) opt.selected = true;
       select.appendChild(opt);
     });
 
     select.addEventListener('change', () => {
       prepEquippedItems[cardId] = select.value || null;
+      // 他の猫の選択肢に在庫変更を反映する
+      renderPrepEquipArea();
     });
 
     // 初期値反映
-    prepEquippedItems[cardId] = prepEquippedItems[cardId] || null;
+    if (prepEquippedItems[cardId] === undefined) prepEquippedItems[cardId] = null;
 
     row.appendChild(nameEl);
     row.appendChild(select);
