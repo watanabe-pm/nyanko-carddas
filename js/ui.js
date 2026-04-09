@@ -458,13 +458,13 @@ function renderBattleScreen() {
   // ログクリア
   const logEl = document.getElementById('battle-log');
   logEl.innerHTML = '';
-  appendLogs(b.log);
-  b.log = []; // 初期ログ（アイテム発動等）を表示後リセット
 
-  // ボタン状態
-  const nextBtn = document.getElementById('btn-next-round');
-  nextBtn.textContent = '次のラウンドへ';
-  nextBtn.disabled = false;
+  // 初期ログ（アイテム発動等）を順番に表示してから最初のラウンドを開始
+  const initLogs = [...b.log];
+  b.log = [];
+  displayLogsSequentially(initLogs, () => {
+    setTimeout(runNextRound, 600);
+  });
 }
 
 // 敵HPゲージ・魅了度ゲージを更新
@@ -510,40 +510,57 @@ function renderBattleCats() {
   });
 }
 
-// ログ行をバトルログに追記
-function appendLogs(lines) {
+// ログ行を1行ずつ500ms間隔で追記し、完了後にコールバックを呼ぶ
+function displayLogsSequentially(lines, onComplete) {
+  if (lines.length === 0) {
+    onComplete();
+    return;
+  }
   const logEl = document.getElementById('battle-log');
-  lines.forEach(line => {
-    const p = document.createElement('p');
-    if (line.startsWith('===')) {
-      p.className = 'log-round';
+  let i = 0;
+  function showNext() {
+    if (i >= lines.length) {
+      onComplete();
+      return;
     }
+    const line = lines[i++];
+    const p = document.createElement('p');
+    if (line.startsWith('===')) p.className = 'log-round';
     p.textContent = line;
     logEl.appendChild(p);
-  });
-  // 最下部へスクロール
-  logEl.scrollTop = logEl.scrollHeight;
+    logEl.scrollTop = logEl.scrollHeight;
+    setTimeout(showNext, 500);
+  }
+  showNext();
 }
 
-// 「次のラウンドへ」ボタン
-document.getElementById('btn-next-round').addEventListener('click', () => {
+// 1ラウンド実行してログ逐次表示→次ラウンドまたは終了処理
+function runNextRound() {
   const b = GameState.battle;
   if (!b || b.result) return;
 
   executeRound();
 
-  // ログ表示
-  appendLogs(b.log);
+  const logs = [...b.log];
   b.log = [];
 
-  // ゲージ・猫状態を更新
-  updateEnemyGauges();
-  renderBattleCats();
+  displayLogsSequentially(logs, () => {
+    updateEnemyGauges();
+    renderBattleCats();
 
-  // 勝敗確認
+    if (b.result) {
+      handleBattleEnd();
+    } else {
+      // 次のラウンドまで少し間隔を空ける
+      setTimeout(runNextRound, 600);
+    }
+  });
+}
+
+// バトル終了時の画面遷移
+function handleBattleEnd() {
+  const b = GameState.battle;
   if (b.result === 'win_hp' || b.result === 'win_charm') {
-    document.getElementById('btn-next-round').textContent = 'クリア！';
-    document.getElementById('btn-next-round').disabled = true;
     setTimeout(() => {
       // ステージ5クリアはクリア画面をスキップしてエンディングへ
       if (GameState.currentStage === 5) {
@@ -554,13 +571,11 @@ document.getElementById('btn-next-round').addEventListener('click', () => {
       }
     }, 1200);
   } else if (b.result === 'lose') {
-    document.getElementById('btn-next-round').textContent = 'ゲームオーバー…';
-    document.getElementById('btn-next-round').disabled = true;
     setTimeout(() => {
       showScreen('screen-gameover');
     }, 1200);
   }
-});
+}
 
 // ===== ステージクリア画面 =====
 
