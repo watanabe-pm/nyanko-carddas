@@ -234,6 +234,29 @@ html, body {
   text-overflow: ellipsis;
 }
 
+/* 画像ありカード：SVG画像でカード全体を覆う */
+.cat-card.has-image {
+  padding: 0;
+  background: transparent;
+  border: none;
+  /* border-radiusとoverflow:hiddenでSVGを角丸にクリップ */
+  overflow: hidden;
+}
+
+.cat-card.has-image .card-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* 画像なしカードの絵文字プレースホルダー */
+.card-placeholder {
+  font-size: 2.5rem;
+  text-align: center;
+  padding: 8px 0;
+  line-height: 1;
+}
+
 /* ===== レアリティ演出 ===== */
 
 /* 画面フラッシュ */
@@ -345,7 +368,159 @@ html, body {
   line-height: 1.8;
 }
 
-/* ===== 猫選択画面 ===== */
+/* ===== 猫選択画面 フリップカード ===== */
+
+/* 外側ラッパー：perspectiveコンテナ */
+.cat-select-flip {
+  width: min(calc((100vw - 52px) / 3), 220px);
+  flex-shrink: 0;
+  perspective: 600px;
+  cursor: pointer;
+  border-radius: var(--radius);
+}
+
+/* 選択状態：外側のアウトラインで表裏どちらでも見える */
+.cat-select-flip.selected {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* 3D回転する内側コンテナ */
+.cat-select-inner {
+  position: relative;
+  width: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease;
+}
+
+.cat-select-flip.flipped .cat-select-inner {
+  transform: rotateY(180deg);
+}
+
+/* 表面 */
+.cat-select-front {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.cat-select-front img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* 画像なしカードの表面プレースホルダー */
+.csf-placeholder {
+  aspect-ratio: 200 / 280;
+  background: var(--color-card);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: var(--color-text-sub);
+  line-height: 1.4;
+  text-align: center;
+}
+
+.csf-placeholder span {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--color-text);
+}
+
+/* 裏面：表面に重ねて絶対配置、初期は裏向き */
+.cat-select-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: rotateY(180deg);
+  background: var(--color-card);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 10px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow: hidden;
+}
+
+/* 裏面レアリティ枠色 */
+.cat-select-back[data-rarity="N"] { border-color: var(--rarity-n); }
+.cat-select-back[data-rarity="R"] { border-color: var(--rarity-r); }
+.cat-select-back[data-rarity="SR"] { border-color: var(--rarity-sr); }
+.cat-select-back[data-rarity="LR"] { border-color: var(--rarity-lr); }
+
+/* 裏面：レアリティラベル */
+.csb-rarity {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.cat-select-back[data-rarity="N"] .csb-rarity { color: var(--rarity-n); }
+.cat-select-back[data-rarity="R"] .csb-rarity { color: var(--rarity-r); }
+.cat-select-back[data-rarity="SR"] .csb-rarity { color: var(--rarity-sr); }
+.cat-select-back[data-rarity="LR"] .csb-rarity { color: var(--rarity-lr); }
+
+/* 裏面：カード名 */
+.csb-name {
+  font-size: 0.9rem;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 裏面：ステータス一覧 */
+.csb-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 0.75rem;
+  color: var(--color-text-sub);
+}
+
+.csb-stats span {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* 裏面：一言説明 */
+.csb-desc {
+  font-size: 0.7rem;
+  color: var(--color-text-sub);
+  font-style: italic;
+  line-height: 1.4;
+  margin-top: auto;
+}
+
+/* 裏面：選択ボタン */
+.csb-select-btn {
+  margin-top: auto;
+  padding: 6px 0;
+  border: 1px solid var(--color-accent);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--color-accent);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+}
+
+.csb-select-btn:hover {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+/* ===== 猫選択画面 プレビューエリア ===== */
 
 /* 選択済みカードのプレビューエリア */
 .cat-select-preview {

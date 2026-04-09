@@ -231,6 +231,14 @@ function executeCatTurn(catId) {
   const cat = b.cats.find(c => c.id === catId);
   if (!cat || cat.hp <= 0) return;
 
+  // さぼり判定：capriciousness × 5% の確率で行動しない
+  const slackChance = (cat.capriciousness || 0) * 0.05;
+  if (Math.random() < slackChance) {
+    const slackAction = cat.slackAction || 'ぼーっとする';
+    b.log.push(`${cat.name}は${slackAction}してしまった！`);
+    return;
+  }
+
   const action = b.catActions[catId];
 
   // チャイルド・カオティカ（物理無効）に対して攻撃した場合の特殊処理

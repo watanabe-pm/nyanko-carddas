@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 280" width="200" height="280">
+  <!-- カード背景 -->
+  <rect width="200" height="280" rx="12" fill="#1a1a2e"/>
+  <!-- Nレアリティ枠 -->
+  <rect x="2" y="2" width="196" height="276" rx="11" fill="none" stroke="#aaaaaa" stroke-width="3"/>
+  <rect x="6" y="6" width="188" height="268" rx="9" fill="none" stroke="#888888" stroke-width="1" opacity="0.4"/>
+  <circle cx="14" cy="14" r="3" fill="#aaaaaa"/>
+  <circle cx="186" cy="14" r="3" fill="#aaaaaa"/>
+  <circle cx="14" cy="266" r="3" fill="#aaaaaa"/>
+  <circle cx="186" cy="266" r="3" fill="#aaaaaa"/>
+  <rect x="12" y="12" width="22" height="16" rx="4" fill="#aaaaaa"/>
+  <text x="23" y="24" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#1a1a2e">N</text>
+  <!-- イラストエリア -->
+  <rect x="12" y="34" width="176" height="185" rx="8" fill="#14100a"/>
+
+  <!-- ===== サビ猫イラスト ===== -->
+  <defs>
+    <clipPath id="illus5">
+      <rect x="12" y="34" width="176" height="185" rx="8"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#illus5)">
+    <!-- しっぽ（黒） -->
+    <path d="M 142,208 C 165,196 170,230 150,242" stroke="#2a1a10" stroke-width="13" fill="none" stroke-linecap="round"/>
+    <!-- しっぽ錆色パッチ -->
+    <path d="M 150,218 C 160,222 164,232 155,240" stroke="#884422" stroke-width="7" fill="none" stroke-linecap="round"/>
+
+    <!-- 体（黒ベース） -->
+    <ellipse cx="100" cy="186" rx="40" ry="42" fill="#2a1a10"/>
+    <!-- 体・錆色パッチ（不規則） -->
+    <ellipse cx="84" cy="174" rx="20" ry="22" fill="#883322"/>
+    <ellipse cx="112" cy="198" rx="16" ry="16" fill="#aa4422"/>
+    <ellipse cx="90" cy="205" rx="12" ry="10" fill="#7a2a18"/>
+
+    <!-- 頭（黒ベース） -->
+    <circle cx="100" cy="108" r="34" fill="#2a1a10"/>
+    <!-- 頭・錆色パッチ -->
+    <path d="M 82,80 Q 78,95 76,115 Q 80,130 90,134 Q 96,118 94,90Z" fill="#883322"/>
+    <ellipse cx="114" cy="120" rx="12" ry="10" fill="#aa4422"/>
+
+    <!-- 左耳 -->
+    <polygon points="70,97 78,63 97,87" fill="#2a1a10"/>
+    <polygon points="74,94 80,67 93,86" fill="#662211"/>
+    <!-- 右耳 -->
+    <polygon points="130,97 122,63 103,87" fill="#2a1a10"/>
+    <polygon points="126,94 120,67 107,86" fill="#662211"/>
+
+    <!-- 左前足 -->
+    <ellipse cx="84" cy="218" rx="16" ry="9" fill="#2a1a10"/>
+    <ellipse cx="80" cy="218" rx="10" ry="7" fill="#883322"/>
+    <!-- 右前足 -->
+    <ellipse cx="116" cy="218" rx="16" ry="9" fill="#2a1a10"/>
+
+    <!-- 目（左・琥珀） -->
+    <ellipse cx="88" cy="107" rx="7" ry="8" fill="#d08030"/>
+    <ellipse cx="88" cy="107" rx="3.5" ry="6" fill="#111"/>
+    <circle cx="90" cy="104" r="1.5" fill="white"/>
+    <!-- 目（右・琥珀） -->
+    <ellipse cx="112" cy="107" rx="7" ry="8" fill="#d08030"/>
+    <ellipse cx="112" cy="107" rx="3.5" ry="6" fill="#111"/>
+    <circle cx="114" cy="104" r="1.5" fill="white"/>
+
+    <!-- 鼻 -->
+    <polygon points="97,120 103,120 100,125" fill="#ff9999"/>
+    <!-- 口 -->
+    <path d="M 97,125 Q 100,130 103,125" stroke="#664433" stroke-width="1.5" fill="none"/>
+    <!-- ひげ -->
+    <line x1="74" y1="118" x2="89" y2="120" stroke="#664433" stroke-width="1"/>
+    <line x1="72" y1="123" x2="89" y2="123" stroke="#664433" stroke-width="1"/>
+    <line x1="74" y1="128" x2="89" y2="126" stroke="#664433" stroke-width="1"/>
+    <line x1="126" y1="118" x2="111" y2="120" stroke="#664433" stroke-width="1"/>
+    <line x1="128" y1="123" x2="111" y2="123" stroke="#664433" stroke-width="1"/>
+    <line x1="126" y1="128" x2="111" y2="126" stroke="#664433" stroke-width="1"/>
+  </g>
+
+  <!-- 名前プレート -->
+  <rect x="12" y="224" width="176" height="44" rx="6" fill="#0d1525"/>
+  <text x="100" y="250" text-anchor="middle" font-family="'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', sans-serif" font-size="16" font-weight="bold" fill="#cccccc">サビ猫</text>
+  <text x="100" y="263" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#888888">TORTOISESHELL</text>
+</svg>

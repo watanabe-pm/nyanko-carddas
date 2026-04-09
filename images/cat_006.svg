@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 280" width="200" height="280">
+  <!-- カード背景 -->
+  <rect width="200" height="280" rx="12" fill="#1a1a2e"/>
+  <!-- Nレアリティ枠 -->
+  <rect x="2" y="2" width="196" height="276" rx="11" fill="none" stroke="#aaaaaa" stroke-width="3"/>
+  <rect x="6" y="6" width="188" height="268" rx="9" fill="none" stroke="#888888" stroke-width="1" opacity="0.4"/>
+  <circle cx="14" cy="14" r="3" fill="#aaaaaa"/>
+  <circle cx="186" cy="14" r="3" fill="#aaaaaa"/>
+  <circle cx="14" cy="266" r="3" fill="#aaaaaa"/>
+  <circle cx="186" cy="266" r="3" fill="#aaaaaa"/>
+  <rect x="12" y="12" width="22" height="16" rx="4" fill="#aaaaaa"/>
+  <text x="23" y="24" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#1a1a2e">N</text>
+  <!-- イラストエリア -->
+  <rect x="12" y="34" width="176" height="185" rx="8" fill="#141820"/>
+
+  <!-- ===== ハチワレイラスト ===== -->
+  <defs>
+    <clipPath id="illus6">
+      <rect x="12" y="34" width="176" height="185" rx="8"/>
+    </clipPath>
+    <clipPath id="headClip6">
+      <circle cx="100" cy="108" r="34"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#illus6)">
+    <!-- しっぽ（白） -->
+    <path d="M 142,208 C 165,196 170,230 150,242" stroke="#e0e0e8" stroke-width="13" fill="none" stroke-linecap="round"/>
+
+    <!-- 体（白） -->
+    <ellipse cx="100" cy="186" rx="40" ry="42" fill="#f0f0f0"/>
+    <!-- 背中の黒ライン -->
+    <ellipse cx="100" cy="175" rx="10" ry="30" fill="#222222"/>
+    <ellipse cx="100" cy="175" rx="10" ry="30" fill="none" stroke="#f0f0f0" stroke-width="1"/>
+
+    <!-- 頭（白ベース） -->
+    <circle cx="100" cy="108" r="34" fill="#f0f0f0"/>
+    <!-- 頭の左半分が黒（ハチワレ） -->
+    <g clip-path="url(#headClip6)">
+      <rect x="66" y="74" width="34" height="68" fill="#222222"/>
+    </g>
+
+    <!-- 左耳（黒） -->
+    <polygon points="70,97 78,63 97,87" fill="#222222"/>
+    <polygon points="74,94 80,67 93,86" fill="#552244"/>
+    <!-- 右耳（白） -->
+    <polygon points="130,97 122,63 103,87" fill="#f0f0f0"/>
+    <polygon points="126,94 120,67 107,86" fill="#ffb6c1"/>
+
+    <!-- 左前足（白） -->
+    <ellipse cx="84" cy="218" rx="16" ry="9" fill="#f0f0f0"/>
+    <!-- 右前足（白） -->
+    <ellipse cx="116" cy="218" rx="16" ry="9" fill="#f0f0f0"/>
+
+    <!-- 目（左・青緑・黒地に映える） -->
+    <ellipse cx="88" cy="107" rx="7" ry="8" fill="#50d0b0"/>
+    <ellipse cx="88" cy="107" rx="3.5" ry="6" fill="#111"/>
+    <circle cx="90" cy="104" r="1.5" fill="white"/>
+    <!-- 目（右・青緑） -->
+    <ellipse cx="112" cy="107" rx="7" ry="8" fill="#50d0b0"/>
+    <ellipse cx="112" cy="107" rx="3.5" ry="6" fill="#111"/>
+    <circle cx="114" cy="104" r="1.5" fill="white"/>
+
+    <!-- 鼻 -->
+    <polygon points="97,120 103,120 100,125" fill="#ffaacc"/>
+    <!-- 口 -->
+    <path d="M 97,125 Q 100,130 103,125" stroke="#aaaaaa" stroke-width="1.5" fill="none"/>
+    <!-- ひげ（左・白地） -->
+    <line x1="74" y1="118" x2="89" y2="120" stroke="#ddddee" stroke-width="1"/>
+    <line x1="72" y1="123" x2="89" y2="123" stroke="#ddddee" stroke-width="1"/>
+    <line x1="74" y1="128" x2="89" y2="126" stroke="#ddddee" stroke-width="1"/>
+    <!-- ひげ（右・白地） -->
+    <line x1="126" y1="118" x2="111" y2="120" stroke="#ddddee" stroke-width="1"/>
+    <line x1="128" y1="123" x2="111" y2="123" stroke="#ddddee" stroke-width="1"/>
+    <line x1="126" y1="128" x2="111" y2="126" stroke="#ddddee" stroke-width="1"/>
+  </g>
+
+  <!-- 名前プレート -->
+  <rect x="12" y="224" width="176" height="44" rx="6" fill="#0d1525"/>
+  <text x="100" y="250" text-anchor="middle" font-family="'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', sans-serif" font-size="16" font-weight="bold" fill="#cccccc">ハチワレ</text>
+  <text x="100" y="263" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#888888">BICOLOR</text>
+</svg>

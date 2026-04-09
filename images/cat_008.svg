@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 280" width="200" height="280">
+  <!-- カード背景 -->
+  <rect width="200" height="280" rx="12" fill="#1a1a2e"/>
+  <!-- Nレアリティ枠 -->
+  <rect x="2" y="2" width="196" height="276" rx="11" fill="none" stroke="#aaaaaa" stroke-width="3"/>
+  <rect x="6" y="6" width="188" height="268" rx="9" fill="none" stroke="#888888" stroke-width="1" opacity="0.4"/>
+  <circle cx="14" cy="14" r="3" fill="#aaaaaa"/>
+  <circle cx="186" cy="14" r="3" fill="#aaaaaa"/>
+  <circle cx="14" cy="266" r="3" fill="#aaaaaa"/>
+  <circle cx="186" cy="266" r="3" fill="#aaaaaa"/>
+  <rect x="12" y="12" width="22" height="16" rx="4" fill="#aaaaaa"/>
+  <text x="23" y="24" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#1a1a2e">N</text>
+  <!-- イラストエリア -->
+  <rect x="12" y="34" width="176" height="185" rx="8" fill="#101418"/>
+
+  <!-- ===== キジトライラスト ===== -->
+  <defs>
+    <clipPath id="illus8">
+      <rect x="12" y="34" width="176" height="185" rx="8"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#illus8)">
+    <!-- しっぽ（グレー） -->
+    <path d="M 142,208 C 165,196 170,230 150,242" stroke="#888880" stroke-width="13" fill="none" stroke-linecap="round"/>
+    <!-- しっぽ縞 -->
+    <path d="M 155,198 C 162,203 164,210 160,216" stroke="#484840" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <path d="M 158,216 C 164,222 165,230 158,236" stroke="#484840" stroke-width="5" fill="none" stroke-linecap="round"/>
+
+    <!-- 体（グレーベース） -->
+    <ellipse cx="100" cy="186" rx="40" ry="42" fill="#888880"/>
+    <!-- 体の縞模様（濃いグレー） -->
+    <path d="M 76,164 Q 80,178 76,196" stroke="#484840" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <path d="M 88,158 Q 90,178 86,200" stroke="#484840" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M 114,158 Q 112,178 116,200" stroke="#484840" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M 126,164 Q 122,178 126,196" stroke="#484840" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <!-- 胸の淡色（グレー系） -->
+    <ellipse cx="100" cy="184" rx="20" ry="24" fill="#b0b0a8" opacity="0.5"/>
+
+    <!-- 頭（グレー） -->
+    <circle cx="100" cy="108" r="34" fill="#888880"/>
+    <!-- 頭の縞 -->
+    <path d="M 88,76 Q 90,90 88,106" stroke="#484840" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M 100,72 Q 100,88 100,106" stroke="#484840" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M 112,76 Q 110,90 112,106" stroke="#484840" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <!-- 頬の淡色 -->
+    <ellipse cx="86" cy="116" rx="10" ry="8" fill="#b0b0a8" opacity="0.5"/>
+    <ellipse cx="114" cy="116" rx="10" ry="8" fill="#b0b0a8" opacity="0.5"/>
+
+    <!-- 左耳 -->
+    <polygon points="70,97 78,63 97,87" fill="#888880"/>
+    <polygon points="74,94 80,67 93,86" fill="#ffb6c1"/>
+    <!-- 右耳 -->
+    <polygon points="130,97 122,63 103,87" fill="#888880"/>
+    <polygon points="126,94 120,67 107,86" fill="#ffb6c1"/>
+
+    <!-- 左前足 -->
+    <ellipse cx="84" cy="218" rx="16" ry="9" fill="#888880"/>
+    <!-- 右前足 -->
+    <ellipse cx="116" cy="218" rx="16" ry="9" fill="#888880"/>
+
+    <!-- 目（左・グリーン） -->
+    <ellipse cx="88" cy="107" rx="7" ry="8" fill="#70b060"/>
+    <ellipse cx="88" cy="107" rx="3.5" ry="6" fill="#111"/>
+    <circle cx="90" cy="104" r="1.5" fill="white"/>
+    <!-- 目（右・グリーン） -->
+    <ellipse cx="112" cy="107" rx="7" ry="8" fill="#70b060"/>
+    <ellipse cx="112" cy="107" rx="3.5" ry="6" fill="#111"/>
+    <circle cx="114" cy="104" r="1.5" fill="white"/>
+
+    <!-- 鼻 -->
+    <polygon points="97,120 103,120 100,125" fill="#ffaaaa"/>
+    <!-- 口 -->
+    <path d="M 97,125 Q 100,130 103,125" stroke="#808080" stroke-width="1.5" fill="none"/>
+    <!-- ひげ -->
+    <line x1="74" y1="118" x2="89" y2="120" stroke="#aaaaaa" stroke-width="1"/>
+    <line x1="72" y1="123" x2="89" y2="123" stroke="#aaaaaa" stroke-width="1"/>
+    <line x1="74" y1="128" x2="89" y2="126" stroke="#aaaaaa" stroke-width="1"/>
+    <line x1="126" y1="118" x2="111" y2="120" stroke="#aaaaaa" stroke-width="1"/>
+    <line x1="128" y1="123" x2="111" y2="123" stroke="#aaaaaa" stroke-width="1"/>
+    <line x1="126" y1="128" x2="111" y2="126" stroke="#aaaaaa" stroke-width="1"/>
+  </g>
+
+  <!-- 名前プレート -->
+  <rect x="12" y="224" width="176" height="44" rx="6" fill="#0d1525"/>
+  <text x="100" y="250" text-anchor="middle" font-family="'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', sans-serif" font-size="16" font-weight="bold" fill="#cccccc">キジトラ</text>
+  <text x="100" y="263" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#888888">GRAY TABBY</text>
+</svg>

@@ -24,19 +24,26 @@ function createCatCardEl(card, options = {}) {
   el.dataset.id = card.id;
   el.dataset.rarity = card.rarity;
 
-  // 現在HPをバトル中の値で表示（渡された場合）
-  const currentHp = options.currentHp !== undefined ? options.currentHp : card.hp;
-
-  el.innerHTML = `
-    <div class="card-rarity">${card.rarity}</div>
-    <div class="card-name">${card.name}</div>
-    <div class="card-stats">
-      <span><em>HP</em><strong>${currentHp}/${card.maxHp}</strong></span>
-      <span><em>ATK</em><strong>${card.atk}</strong></span>
-      <span><em>CHARM</em><strong>${card.charm}</strong></span>
-      <span><em>SPD</em><strong>${card.spd}</strong></span>
-    </div>
-  `;
+  if (card.image) {
+    // 画像ありカード：SVG画像のみ表示
+    el.classList.add('has-image');
+    const img = document.createElement('img');
+    img.className = 'card-image';
+    img.src = card.image;
+    img.alt = card.name;
+    // 読み込み失敗時：プレースホルダーにフォールバック
+    img.onerror = () => {
+      el.classList.remove('has-image');
+      el.innerHTML = `<div class="card-rarity">${card.rarity}</div><div class="card-placeholder">🐱</div>`;
+    };
+    el.appendChild(img);
+  } else {
+    // 画像なしカード（R/SR/LR）：レアリティと絵文字プレースホルダーを表示
+    el.innerHTML = `
+      <div class="card-rarity">${card.rarity}</div>
+      <div class="card-placeholder">🐱</div>
+    `;
+  }
 
   if (options.isKo) el.classList.add('ko');
   return el;
@@ -179,6 +186,62 @@ function renderCatSelectPreview() {
   });
 }
 
+// 猫選択画面用フリップカードを生成する
+// 表面: SVG画像、裏面: ステータス+選択ボタン
+function createCatSelectFlipEl(card) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'cat-select-flip';
+  wrapper.dataset.id = card.id;
+  wrapper.dataset.rarity = card.rarity;
+
+  const inner = document.createElement('div');
+  inner.className = 'cat-select-inner';
+
+  // ===== 表面（画像） =====
+  const front = document.createElement('div');
+  front.className = 'cat-select-front';
+
+  if (card.image) {
+    const img = document.createElement('img');
+    img.src = card.image;
+    img.alt = card.name;
+    img.onerror = () => {
+      front.innerHTML = `<div class="csf-placeholder">${card.rarity}<br>🐱<br><span>${card.name}</span></div>`;
+    };
+    front.appendChild(img);
+  } else {
+    front.innerHTML = `<div class="csf-placeholder">${card.rarity}<br>🐱<br><span>${card.name}</span></div>`;
+  }
+
+  // ===== 裏面（ステータス） =====
+  const back = document.createElement('div');
+  back.className = 'cat-select-back';
+  back.dataset.rarity = card.rarity;
+
+  const selectBtn = document.createElement('button');
+  selectBtn.className = 'csb-select-btn';
+  selectBtn.textContent = '選択する';
+
+  back.innerHTML = `
+    <div class="csb-rarity">${card.rarity}</div>
+    <div class="csb-name">${card.name}</div>
+    <div class="csb-stats">
+      <span><em>HP</em><strong>${card.hp}/${card.maxHp}</strong></span>
+      <span><em>ATK</em><strong>${card.atk}</strong></span>
+      <span><em>CHARM</em><strong>${card.charm}</strong></span>
+      <span><em>SPD</em><strong>${card.spd}</strong></span>
+    </div>
+    ${card.description ? `<p class="csb-desc">${card.description}</p>` : ''}
+  `;
+  back.appendChild(selectBtn);
+
+  inner.appendChild(front);
+  inner.appendChild(back);
+  wrapper.appendChild(inner);
+
+  return { wrapper, selectBtn };
+}
+
 function renderCatSelectScreen() {
   catSelectIds = new Set();
   updateCatSelectConfirmBtn();
@@ -196,21 +259,32 @@ function renderCatSelectScreen() {
   list.appendChild(bottomRow);
 
   GameState.deck.forEach((card, index) => {
-    const el = createCatCardEl(card);
-    el.addEventListener('click', () => {
+    const { wrapper, selectBtn } = createCatSelectFlipEl(card);
+
+    // カードクリック → フリップ（表裏切り替え）
+    wrapper.addEventListener('click', () => {
+      wrapper.classList.toggle('flipped');
+    });
+
+    // 選択ボタンクリック → 選択状態トグル（フリップはしない）
+    selectBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
       if (catSelectIds.has(card.id)) {
         catSelectIds.delete(card.id);
-        el.classList.remove('selected');
+        wrapper.classList.remove('selected');
+        selectBtn.textContent = '選択する';
       } else {
         if (catSelectIds.size >= 3) return;
         catSelectIds.add(card.id);
-        el.classList.add('selected');
+        wrapper.classList.add('selected');
+        selectBtn.textContent = '選択解除';
       }
       updateCatSelectConfirmBtn();
       renderCatSelectPreview();
     });
+
     const row = index < 3 ? topRow : bottomRow;
-    row.appendChild(el);
+    row.appendChild(wrapper);
   });
 }
 

@@ -12,6 +12,10 @@ const CARDS = [
     atk: 10,
     charm: 12,
     spd: 8,
+    image: 'images/cat_001.svg',
+    capriciousness: 6,
+    slackAction: 'ぼーっとする',
+    description: '気分によって動いたり動かなかったり',
   },
   {
     id: 'kuroneko',
@@ -22,6 +26,10 @@ const CARDS = [
     atk: 12,
     charm: 8,
     spd: 12,
+    image: 'images/cat_002.svg',
+    capriciousness: 4,
+    slackAction: 'おびえる',
+    description: '慎重すぎて腰が引けることも',
   },
   {
     id: 'shironeko',
@@ -32,6 +40,10 @@ const CARDS = [
     atk: 8,
     charm: 10,
     spd: 10,
+    image: 'images/cat_003.svg',
+    capriciousness: 7,
+    slackAction: 'グルーミングする',
+    description: '自分磨きに忙しいことがある',
   },
   {
     id: 'toraneko',
@@ -42,6 +54,10 @@ const CARDS = [
     atk: 12,
     charm: 8,
     spd: 10,
+    image: 'images/cat_004.svg',
+    capriciousness: 3,
+    slackAction: 'ぼーっとする',
+    description: 'おおらかで頼りになる',
   },
   {
     id: 'sabineko',
@@ -52,6 +68,10 @@ const CARDS = [
     atk: 8,
     charm: 12,
     spd: 9,
+    image: 'images/cat_005.svg',
+    capriciousness: 6,
+    slackAction: 'グルーミングする',
+    description: '我が道を行く一匹狼',
   },
   {
     id: 'hachiware',
@@ -62,6 +82,10 @@ const CARDS = [
     atk: 10,
     charm: 10,
     spd: 10,
+    image: 'images/cat_006.svg',
+    capriciousness: 4,
+    slackAction: 'ぼーっとする',
+    description: '穏やかで安心感がある',
   },
   {
     id: 'chatoraneko',
@@ -72,6 +96,10 @@ const CARDS = [
     atk: 11,
     charm: 9,
     spd: 11,
+    image: 'images/cat_007.svg',
+    capriciousness: 5,
+    slackAction: '寝る',
+    description: 'いつでもどこでも眠れる',
   },
   {
     id: 'kijitoraneko',
@@ -82,6 +110,10 @@ const CARDS = [
     atk: 12,
     charm: 8,
     spd: 12,
+    image: 'images/cat_008.svg',
+    capriciousness: 5,
+    slackAction: 'おびえる',
+    description: 'ちょっとしたことで固まる',
   },
 
   // ===== R レアリティ =====
@@ -94,6 +126,9 @@ const CARDS = [
     atk: 15,
     charm: 15,
     spd: 15,
+    capriciousness: 5,
+    slackAction: 'ぼーっとする',
+    description: '自分のペースを崩さない',
   },
   {
     id: 'russian_blue',
@@ -104,6 +139,9 @@ const CARDS = [
     atk: 13,
     charm: 18,
     spd: 13,
+    capriciousness: 3,
+    slackAction: 'おびえる',
+    description: '繊細だが芯は強い',
   },
   {
     id: 'bengal',
@@ -114,6 +152,9 @@ const CARDS = [
     atk: 18,
     charm: 13,
     spd: 18,
+    capriciousness: 7,
+    slackAction: 'ぼーっとする',
+    description: '気分が乗れば無双する',
   },
   {
     id: 'norwegian',
@@ -124,6 +165,9 @@ const CARDS = [
     atk: 15,
     charm: 15,
     spd: 13,
+    capriciousness: 4,
+    slackAction: '寝る',
+    description: 'ゆったり構えて動じない',
   },
   {
     id: 'ragdoll',
@@ -134,6 +178,9 @@ const CARDS = [
     atk: 13,
     charm: 18,
     spd: 14,
+    capriciousness: 6,
+    slackAction: '寝る',
+    description: '力が抜けてしまうことがある',
   },
 
   // ===== SR レアリティ =====
@@ -146,6 +193,9 @@ const CARDS = [
     atk: 30,
     charm: 15,
     spd: 18,
+    capriciousness: 4,
+    slackAction: '堂々としている',
+    description: '常に堂々と存在感を放つ',
   },
   {
     id: 'munchkin',
@@ -156,6 +206,9 @@ const CARDS = [
     atk: 15,
     charm: 30,
     spd: 18,
+    capriciousness: 6,
+    slackAction: 'グルーミングする',
+    description: '興味が移るとそっちに夢中',
   },
 
   // ===== LR レアリティ =====
@@ -168,6 +221,9 @@ const CARDS = [
     atk: 35,
     charm: 35,
     spd: 25,
+    capriciousness: 1,
+    slackAction: '輝いている',
+    description: '黄金の輝きで場を支配する',
   },
 ];
 
