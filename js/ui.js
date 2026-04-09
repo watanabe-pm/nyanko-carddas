@@ -252,12 +252,15 @@ let prepCatActions = {};
 let prepEquippedItems = {};
 // 購入済みアイテム在庫数 { itemId: count }
 let purchasedItems = {};
+// チーム全体の行動（'attack' | 'charm'）
+let prepTeamAction = 'attack';
 
 function renderBattlePrepScreen() {
   // 猫選択画面で選んだ3匹を固定で使用
   prepSelectedIds = new Set(GameState.selectedCatIds);
   prepCatActions = {};
   prepEquippedItems = {};
+  prepTeamAction = 'attack'; // デフォルトは攻撃主体
   purchasedItems = {};
 
   // 選択済みの3匹を1行で表示（選択操作なし）
@@ -389,51 +392,42 @@ function renderPrepEquipArea() {
   });
 }
 
-// 行動選択エリア表示
+// 行動選択エリア表示（チーム全体で1択）
 function renderPrepActionList() {
+  // 全員の catActions を現在のチーム行動で更新
+  prepSelectedIds.forEach(id => {
+    prepCatActions[id] = prepTeamAction;
+  });
+
   const list = document.getElementById('prep-action-list');
   list.innerHTML = '';
 
-  prepSelectedIds.forEach(cardId => {
-    const card = GameState.deck.find(c => c.id === cardId);
-    if (!prepCatActions[cardId]) prepCatActions[cardId] = 'attack';
+  const toggle = document.createElement('div');
+  toggle.className = 'action-toggle';
 
-    const row = document.createElement('div');
-    row.className = 'action-row';
+  const atkBtn = document.createElement('button');
+  atkBtn.textContent = '攻撃主体';
+  atkBtn.className = prepTeamAction === 'attack' ? 'active-attack' : '';
 
-    const nameEl = document.createElement('span');
-    nameEl.className = 'action-cat-name';
-    nameEl.textContent = card.name;
+  const charmBtn = document.createElement('button');
+  charmBtn.textContent = '魅了主体';
+  charmBtn.className = prepTeamAction === 'charm' ? 'active-charm' : '';
 
-    const toggle = document.createElement('div');
-    toggle.className = 'action-toggle';
-
-    const atkBtn = document.createElement('button');
-    atkBtn.textContent = '攻撃';
-    atkBtn.className = prepCatActions[cardId] === 'attack' ? 'active-attack' : '';
-
-    const charmBtn = document.createElement('button');
-    charmBtn.textContent = '魅了';
-    charmBtn.className = prepCatActions[cardId] === 'charm' ? 'active-charm' : '';
-
-    atkBtn.addEventListener('click', () => {
-      prepCatActions[cardId] = 'attack';
-      atkBtn.className = 'active-attack';
-      charmBtn.className = '';
-    });
-
-    charmBtn.addEventListener('click', () => {
-      prepCatActions[cardId] = 'charm';
-      charmBtn.className = 'active-charm';
-      atkBtn.className = '';
-    });
-
-    toggle.appendChild(atkBtn);
-    toggle.appendChild(charmBtn);
-    row.appendChild(nameEl);
-    row.appendChild(toggle);
-    list.appendChild(row);
+  atkBtn.addEventListener('click', () => {
+    prepTeamAction = 'attack';
+    prepSelectedIds.forEach(id => { prepCatActions[id] = 'attack'; });
+    renderPrepActionList();
   });
+
+  charmBtn.addEventListener('click', () => {
+    prepTeamAction = 'charm';
+    prepSelectedIds.forEach(id => { prepCatActions[id] = 'charm'; });
+    renderPrepActionList();
+  });
+
+  toggle.appendChild(atkBtn);
+  toggle.appendChild(charmBtn);
+  list.appendChild(toggle);
 }
 
 // バトル開始ボタンの活性制御
