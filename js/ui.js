@@ -545,8 +545,13 @@ document.getElementById('btn-next-round').addEventListener('click', () => {
     document.getElementById('btn-next-round').textContent = 'クリア！';
     document.getElementById('btn-next-round').disabled = true;
     setTimeout(() => {
-      renderStageClearScreen();
-      showScreen('screen-stage-clear');
+      // ステージ5クリアはクリア画面をスキップしてエンディングへ
+      if (GameState.currentStage === 5) {
+        showScreen('screen-ending');
+      } else {
+        renderStageClearScreen();
+        showScreen('screen-stage-clear');
+      }
     }, 1200);
   } else if (b.result === 'lose') {
     document.getElementById('btn-next-round').textContent = 'ゲームオーバー…';
@@ -565,6 +570,18 @@ function renderStageClearScreen() {
     ? `${b.enemy.name}を魅了した！`
     : `${b.enemy.name}を撃破した！`;
   document.getElementById('stage-clear-msg').textContent = winMsg;
+
+  // 出撃した3匹をバトル後のHPで表示
+  const area = document.getElementById('stage-clear-cats');
+  area.innerHTML = '';
+  const row = document.createElement('div');
+  row.className = 'draw-row';
+  area.appendChild(row);
+
+  GameState.selectedCatIds.forEach(id => {
+    const battleCat = b.cats.find(c => c.id === id);
+    row.appendChild(createCatCardEl(battleCat));
+  });
 }
 
 document.getElementById('btn-reward-hp').addEventListener('click', () => {

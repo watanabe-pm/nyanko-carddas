@@ -613,6 +613,10 @@ html, body {
 }
 
 /* ===== ステージクリア画面 ===== */
+#stage-clear-cats {
+  margin: 12px 0;
+}
+
 .reward-choices {
   display: flex;
   flex-direction: column;
