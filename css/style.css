@@ -492,6 +492,17 @@ html, body {
   justify-content: space-between;
 }
 
+/* 裏面：スクロールエリア（ボタン以外のコンテンツをまとめる） */
+.csb-scroll-area {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
 /* 裏面：一言説明 */
 .csb-desc {
   font-size: 0.7rem;
@@ -501,9 +512,10 @@ html, body {
   margin-top: auto;
 }
 
-/* 裏面：選択ボタン */
+/* 裏面：選択ボタン（常に下部に固定表示） */
 .csb-select-btn {
-  margin-top: auto;
+  flex-shrink: 0;
+  margin-top: 4px;
   padding: 6px 0;
   border: 1px solid var(--color-accent);
   border-radius: 6px;
@@ -512,12 +524,20 @@ html, body {
   font-size: 0.8rem;
   font-weight: 700;
   cursor: pointer;
+  /* タップ遅延を防止 */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   transition: background var(--transition), color var(--transition);
 }
 
 .csb-select-btn:hover {
   background: var(--color-accent);
   color: #fff;
+}
+
+/* フリップ時：表面のタッチを無効化（裏面ボタンへの干渉を防ぐ） */
+.cat-select-flip.flipped .cat-select-front {
+  pointer-events: none;
 }
 
 /* ===== 猫選択画面 プレビューエリア ===== */

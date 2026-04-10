@@ -223,15 +223,17 @@ function createCatSelectFlipEl(card) {
   selectBtn.textContent = '選択する';
 
   back.innerHTML = `
-    <div class="csb-rarity">${card.rarity}</div>
-    <div class="csb-name">${card.name}</div>
-    <div class="csb-stats">
-      <span><em>HP</em><strong>${card.hp}/${card.maxHp}</strong></span>
-      <span><em>ATK</em><strong>${card.atk}</strong></span>
-      <span><em>CHARM</em><strong>${card.charm}</strong></span>
-      <span><em>SPD</em><strong>${card.spd}</strong></span>
+    <div class="csb-scroll-area">
+      <div class="csb-rarity">${card.rarity}</div>
+      <div class="csb-name">${card.name}</div>
+      <div class="csb-stats">
+        <span><em>HP</em><strong>${card.hp}/${card.maxHp}</strong></span>
+        <span><em>ATK</em><strong>${card.atk}</strong></span>
+        <span><em>CHARM</em><strong>${card.charm}</strong></span>
+        <span><em>SPD</em><strong>${card.spd}</strong></span>
+      </div>
+      ${card.description ? `<p class="csb-desc">${card.description}</p>` : ''}
     </div>
-    ${card.description ? `<p class="csb-desc">${card.description}</p>` : ''}
   `;
   back.appendChild(selectBtn);
 
