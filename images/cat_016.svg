@@ -1,0 +1,183 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 280" width="200" height="280">
+  <defs>
+    <linearGradient id="rainbowH16" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#ff4444"/>
+      <stop offset="20%"  stop-color="#ff9900"/>
+      <stop offset="40%"  stop-color="#ffee00"/>
+      <stop offset="60%"  stop-color="#44ee44"/>
+      <stop offset="80%"  stop-color="#4499ff"/>
+      <stop offset="100%" stop-color="#cc44ff"/>
+    </linearGradient>
+    <linearGradient id="rainbowD16" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#ff4444"/>
+      <stop offset="20%"  stop-color="#ff9900"/>
+      <stop offset="40%"  stop-color="#ffee00"/>
+      <stop offset="60%"  stop-color="#44ee88"/>
+      <stop offset="80%"  stop-color="#4499ff"/>
+      <stop offset="100%" stop-color="#cc44ff"/>
+    </linearGradient>
+    <linearGradient id="lrBadge16" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#ff5544"/>
+      <stop offset="50%"  stop-color="#ffdd00"/>
+      <stop offset="100%" stop-color="#aa44ff"/>
+    </linearGradient>
+    <radialGradient id="bgGlow16" cx="50%" cy="44%" r="58%">
+      <stop offset="0%"   stop-color="#ffd700" stop-opacity="0.22"/>
+      <stop offset="45%"  stop-color="#aa44ff" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#1a1a2e" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="bodyGrad16" cx="36%" cy="28%" r="65%">
+      <stop offset="0%"  stop-color="#fffccc"/>
+      <stop offset="50%" stop-color="#ffd700"/>
+      <stop offset="100%" stop-color="#c89000"/>
+    </radialGradient>
+    <radialGradient id="coinGrad16" cx="35%" cy="30%" r="70%">
+      <stop offset="0%"  stop-color="#ffffaa"/>
+      <stop offset="100%" stop-color="#bb8800"/>
+    </radialGradient>
+    <clipPath id="illus16">
+      <rect x="12" y="34" width="176" height="185" rx="8"/>
+    </clipPath>
+  </defs>
+
+  <!-- カード背景 -->
+  <rect width="200" height="280" rx="12" fill="#1a1a2e"/>
+  <!-- 虹色外枠 -->
+  <rect x="2" y="2" width="196" height="276" rx="11" fill="none" stroke="url(#rainbowD16)" stroke-width="4"/>
+  <!-- 金色内枠（二重） -->
+  <rect x="7" y="7" width="186" height="266" rx="9" fill="none" stroke="#ffd700" stroke-width="1.8" opacity="0.75"/>
+  <rect x="11" y="11" width="178" height="258" rx="7" fill="none" stroke="#ffd700" stroke-width="0.6" opacity="0.3"/>
+
+  <!-- 四隅の豪華コーナー装飾 -->
+  <path d="M13,28 L13,11 L28,11" fill="none" stroke="#ffd700" stroke-width="3" stroke-linecap="round"/>
+  <path d="M17,27 L17,15 L27,15" fill="none" stroke="#ffd700" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
+  <circle cx="13" cy="11" r="3.2" fill="#ffd700"/>
+  <circle cx="13" cy="11" r="1.6" fill="white" opacity="0.85"/>
+  <path d="M172,11 L187,11 L187,28" fill="none" stroke="#ffd700" stroke-width="3" stroke-linecap="round"/>
+  <path d="M173,15 L183,15 L183,27" fill="none" stroke="#ffd700" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
+  <circle cx="187" cy="11" r="3.2" fill="#ffd700"/>
+  <circle cx="187" cy="11" r="1.6" fill="white" opacity="0.85"/>
+  <path d="M187,252 L187,269 L172,269" fill="none" stroke="#ffd700" stroke-width="3" stroke-linecap="round"/>
+  <path d="M183,253 L183,265 L173,265" fill="none" stroke="#ffd700" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
+  <circle cx="187" cy="269" r="3.2" fill="#ffd700"/>
+  <circle cx="187" cy="269" r="1.6" fill="white" opacity="0.85"/>
+  <path d="M28,269 L13,269 L13,252" fill="none" stroke="#ffd700" stroke-width="3" stroke-linecap="round"/>
+  <path d="M27,265 L17,265 L17,253" fill="none" stroke="#ffd700" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
+  <circle cx="13" cy="269" r="3.2" fill="#ffd700"/>
+  <circle cx="13" cy="269" r="1.6" fill="white" opacity="0.85"/>
+
+  <!-- 星のきらめき装飾（枠内・イラストエリア外の余白に配置） -->
+  <!-- 上中央・白 -->
+  <path d="M100,16 L102.2,9 L104.4,16 L111.6,18.2 L104.4,20.4 L102.2,27.6 L100,20.4 L92.8,18.2 Z" fill="white" opacity="0.95"/>
+  <!-- 右上・赤 -->
+  <path d="M169,23 L171.8,15 L174.6,23 L182.6,25.8 L174.6,28.6 L171.8,36.6 L169,28.6 L161,25.8 Z" fill="#ff5544" opacity="0.95"/>
+  <!-- 左上・青 -->
+  <path d="M27,23 L29.8,15 L32.6,23 L40.6,25.8 L32.6,28.6 L29.8,36.6 L27,28.6 L19,25.8 Z" fill="#4499ff" opacity="0.95"/>
+  <!-- 小さな星・紫 -->
+  <path d="M160,38 L161.5,34 L163,38 L167,39.5 L163,41 L161.5,45 L160,41 L156,39.5 Z" fill="#cc44ff" opacity="0.82"/>
+  <!-- 小さな星・オレンジ -->
+  <path d="M35,38 L36.5,34 L38,38 L42,39.5 L38,41 L36.5,45 L35,41 L31,39.5 Z" fill="#ff9933" opacity="0.82"/>
+
+  <!-- レアリティバッジ -->
+  <rect x="12" y="12" width="30" height="16" rx="4" fill="url(#lrBadge16)"/>
+  <text x="27" y="24" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">LR</text>
+
+  <!-- イラストエリア -->
+  <rect x="12" y="34" width="176" height="185" rx="8" fill="#0e1628"/>
+  <rect x="12" y="34" width="176" height="185" rx="8" fill="url(#bgGlow16)"/>
+
+  <!-- 猫イラスト（クリップ） -->
+  <g clip-path="url(#illus16)">
+    <!-- 背景の光輪オーラ -->
+    <circle cx="100" cy="108" r="76" fill="none" stroke="#ffd700" stroke-width="1" opacity="0.18"/>
+    <circle cx="100" cy="108" r="68" fill="none" stroke="#ffaa00" stroke-width="0.8" opacity="0.14"/>
+    <circle cx="100" cy="108" r="59" fill="none" stroke="#cc88ff" stroke-width="0.6" opacity="0.12"/>
+    <!-- 左腕（小判を持つ） -->
+    <path d="M66,147 C58,160 52,172 50,183" fill="none" stroke="#ffd700" stroke-width="14" stroke-linecap="round"/>
+    <!-- 小判 -->
+    <ellipse cx="48" cy="192" rx="23" ry="15" fill="#b08800" transform="rotate(-12,48,192)"/>
+    <ellipse cx="48" cy="192" rx="19" ry="12" fill="url(#coinGrad16)" transform="rotate(-12,48,192)"/>
+    <ellipse cx="48" cy="192" rx="12" ry="7.5" fill="#fff8aa" opacity="0.55" transform="rotate(-12,48,192)"/>
+    <text x="37" y="196" font-family="serif" font-size="9" font-weight="bold" fill="#886600" opacity="0.9" transform="rotate(-12,37,196)">大吉</text>
+    <!-- 右腕（上げた腕） -->
+    <path d="M134,147 C142,130 149,114 150,96" fill="none" stroke="#ffd700" stroke-width="15" stroke-linecap="round"/>
+    <path d="M135,146 C142,130 149,114 150,97" fill="none" stroke="#fff8cc" stroke-width="5" stroke-linecap="round" opacity="0.38"/>
+    <!-- 右の前脚（上げた先端） -->
+    <ellipse cx="149" cy="88" rx="17" ry="14" fill="#ffd700" transform="rotate(-15,149,88)"/>
+    <ellipse cx="149" cy="88" rx="13" ry="10" fill="#fff8cc" opacity="0.42" transform="rotate(-15,149,88)"/>
+    <line x1="138" y1="83" x2="136" y2="76" stroke="#cc9900" stroke-width="1.8" opacity="0.85"/>
+    <line x1="146" y1="79" x2="145" y2="72" stroke="#cc9900" stroke-width="1.8" opacity="0.85"/>
+    <line x1="154" y1="79" x2="155" y2="72" stroke="#cc9900" stroke-width="1.8" opacity="0.85"/>
+    <line x1="161" y1="84" x2="163" y2="77" stroke="#cc9900" stroke-width="1.8" opacity="0.85"/>
+    <!-- 体 -->
+    <ellipse cx="100" cy="182" rx="53" ry="46" fill="url(#bodyGrad16)"/>
+    <ellipse cx="90" cy="164" rx="30" ry="24" fill="#fffde0" opacity="0.28"/>
+    <ellipse cx="100" cy="180" rx="30" ry="26" fill="#fffde8" opacity="0.42"/>
+    <!-- 首輪（赤） -->
+    <path d="M62,140 Q100,157 138,140" fill="none" stroke="#cc1800" stroke-width="9" stroke-linecap="round"/>
+    <path d="M62,140 Q100,157 138,140" fill="none" stroke="#ffd700" stroke-width="2" opacity="0.8"/>
+    <!-- 鈴 -->
+    <circle cx="100" cy="155" r="9" fill="#c89000"/>
+    <circle cx="100" cy="155" r="7" fill="#ffd700"/>
+    <circle cx="100" cy="155" r="4.5" fill="#ffee44"/>
+    <circle cx="100" cy="155" r="2" fill="#aa7700"/>
+    <circle cx="97" cy="152" r="2" fill="white" opacity="0.7"/>
+    <line x1="100" y1="144" x2="100" y2="149" stroke="#ffd700" stroke-width="1.8"/>
+    <!-- 耳 -->
+    <polygon points="68,88 78,60 94,86" fill="#ffd700"/>
+    <polygon points="106,86 122,60 132,88" fill="#ffd700"/>
+    <polygon points="71,86 78,66 91,84" fill="#fffde0" opacity="0.4"/>
+    <polygon points="109,84 122,66 129,86" fill="#fffde0" opacity="0.4"/>
+    <polygon points="72,86 78,67 90,84" fill="#ffbbaa"/>
+    <polygon points="110,84 122,67 128,86" fill="#ffbbaa"/>
+    <!-- 頭 -->
+    <circle cx="100" cy="104" r="49" fill="url(#bodyGrad16)"/>
+    <ellipse cx="87" cy="87" rx="26" ry="20" fill="#fffde0" opacity="0.26"/>
+    <!-- 額の「王」風マーク -->
+    <line x1="85" y1="77" x2="115" y2="77" stroke="#b08800" stroke-width="2.2" opacity="0.72"/>
+    <line x1="83" y1="83" x2="117" y2="83" stroke="#b08800" stroke-width="2" opacity="0.65"/>
+    <line x1="100" y1="72" x2="100" y2="89" stroke="#b08800" stroke-width="2.2" opacity="0.68"/>
+    <!-- 目 -->
+    <circle cx="84" cy="105" r="11" fill="#f8f0cc"/>
+    <circle cx="116" cy="105" r="11" fill="#f8f0cc"/>
+    <circle cx="84" cy="105" r="8" fill="#cc8800"/>
+    <circle cx="116" cy="105" r="8" fill="#cc8800"/>
+    <circle cx="84" cy="105" r="5" fill="#060606"/>
+    <circle cx="116" cy="105" r="5" fill="#060606"/>
+    <circle cx="87" cy="102" r="3" fill="white" opacity="0.92"/>
+    <circle cx="119" cy="102" r="3" fill="white" opacity="0.92"/>
+    <circle cx="82" cy="109" r="1.5" fill="white" opacity="0.6"/>
+    <circle cx="114" cy="109" r="1.5" fill="white" opacity="0.6"/>
+    <!-- 鼻・口 -->
+    <path d="M96,117 Q100,113 104,117 Q100,123 96,117 Z" fill="#ff9999"/>
+    <path d="M94,121 Q100,128 106,121" fill="none" stroke="#cc9988" stroke-width="1.8"/>
+    <line x1="100" y1="123" x2="100" y2="125" stroke="#cc9988" stroke-width="1.8"/>
+    <!-- ひげ（金色） -->
+    <line x1="94" y1="117" x2="52" y2="110" stroke="#ffd700" stroke-width="1.3" opacity="0.88"/>
+    <line x1="94" y1="119" x2="51" y2="119" stroke="#ffd700" stroke-width="1.3" opacity="0.88"/>
+    <line x1="94" y1="121" x2="53" y2="128" stroke="#ffd700" stroke-width="1.2" opacity="0.85"/>
+    <line x1="106" y1="117" x2="148" y2="110" stroke="#ffd700" stroke-width="1.3" opacity="0.88"/>
+    <line x1="106" y1="119" x2="149" y2="119" stroke="#ffd700" stroke-width="1.3" opacity="0.88"/>
+    <line x1="106" y1="121" x2="147" y2="128" stroke="#ffd700" stroke-width="1.2" opacity="0.85"/>
+    <!-- 前脚 -->
+    <ellipse cx="76" cy="218" rx="22" ry="11" fill="#ffd700"/>
+    <ellipse cx="124" cy="218" rx="22" ry="11" fill="#ffd700"/>
+    <ellipse cx="71" cy="215" rx="14" ry="7" fill="#fffde0" opacity="0.38"/>
+    <ellipse cx="119" cy="215" rx="14" ry="7" fill="#fffde0" opacity="0.38"/>
+    <line x1="65" y1="216" x2="64" y2="226" stroke="#c89000" stroke-width="1.5" opacity="0.82"/>
+    <line x1="71" y1="214" x2="70" y2="225" stroke="#c89000" stroke-width="1.5" opacity="0.82"/>
+    <line x1="79" y1="214" x2="78" y2="225" stroke="#c89000" stroke-width="1.5" opacity="0.82"/>
+    <line x1="85" y1="216" x2="84" y2="226" stroke="#c89000" stroke-width="1.5" opacity="0.82"/>
+    <line x1="115" y1="216" x2="116" y2="226" stroke="#c89000" stroke-width="1.5" opacity="0.82"/>
+    <line x1="121" y1="214" x2="122" y2="225" stroke="#c89000" stroke-width="1.5" opacity="0.82"/>
+    <line x1="129" y1="214" x2="130" y2="225" stroke="#c89000" stroke-width="1.5" opacity="0.82"/>
+    <line x1="135" y1="216" x2="136" y2="226" stroke="#c89000" stroke-width="1.5" opacity="0.82"/>
+  </g>
+
+  <!-- 名前プレート -->
+  <rect x="12" y="224" width="176" height="44" rx="6" fill="#0d1525"/>
+  <!-- 名前プレート上部に虹色ライン -->
+  <line x1="12" y1="224" x2="188" y2="224" stroke="url(#rainbowH16)" stroke-width="1.5" opacity="0.8"/>
+  <text x="100" y="250" text-anchor="middle" font-family="'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', sans-serif" font-size="17" font-weight="bold" fill="#ffd700">招き猫</text>
+  <text x="100" y="263" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#d4aa44">MANEKI NEKO</text>
+</svg>

@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 280" width="200" height="280">
+  <defs>
+    <radialGradient id="bodyGrad10" cx="38%" cy="32%" r="65%">
+      <stop offset="0%" stop-color="#aabbd8"/>
+      <stop offset="100%" stop-color="#5a6e90"/>
+    </radialGradient>
+    <radialGradient id="eyeGrad10" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#44ee99"/>
+      <stop offset="100%" stop-color="#0d9955"/>
+    </radialGradient>
+    <clipPath id="illus10">
+      <rect x="12" y="34" width="176" height="185" rx="8"/>
+    </clipPath>
+  </defs>
+
+  <!-- カード背景 -->
+  <rect width="200" height="280" rx="12" fill="#1a1a2e"/>
+  <!-- Rレアリティ枠（青） -->
+  <rect x="2" y="2" width="196" height="276" rx="11" fill="none" stroke="#4dabf7" stroke-width="3"/>
+  <rect x="6" y="6" width="188" height="268" rx="9" fill="none" stroke="#4dabf7" stroke-width="1" opacity="0.4"/>
+  <!-- 四隅デコ -->
+  <circle cx="14" cy="14" r="3" fill="#4dabf7"/>
+  <circle cx="186" cy="14" r="3" fill="#4dabf7"/>
+  <circle cx="14" cy="266" r="3" fill="#4dabf7"/>
+  <circle cx="186" cy="266" r="3" fill="#4dabf7"/>
+  <!-- レアリティバッジ -->
+  <rect x="12" y="12" width="22" height="16" rx="4" fill="#4dabf7"/>
+  <text x="23" y="24" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#1a1a2e">R</text>
+  <!-- イラストエリア -->
+  <rect x="12" y="34" width="176" height="185" rx="8" fill="#152040"/>
+
+  <!-- 猫イラスト（クリップ） -->
+  <g clip-path="url(#illus10)">
+    <!-- 尻尾（単色・なめらか） -->
+    <path d="M148,183 C175,162 178,138 166,124 C158,113 148,122 150,140 C152,157 140,172 124,184"
+          fill="none" stroke="#7a8db0" stroke-width="14" stroke-linecap="round"/>
+    <path d="M163,127 C157,116 149,124 151,138" fill="none" stroke="#aabbd8" stroke-width="6" stroke-linecap="round"/>
+    <!-- 体（無地・ブルーグレー） -->
+    <ellipse cx="100" cy="178" rx="50" ry="42" fill="url(#bodyGrad10)"/>
+    <ellipse cx="98" cy="168" rx="18" ry="14" fill="#c8d8ee" opacity="0.35"/>
+    <!-- 耳（外） -->
+    <polygon points="68,90 79,58 97,88" fill="#7a8db0"/>
+    <polygon points="103,88 121,58 132,90" fill="#7a8db0"/>
+    <!-- 耳（内） -->
+    <polygon points="71,88 79,64 93,86" fill="#f0b8c8"/>
+    <polygon points="107,86 121,64 129,88" fill="#f0b8c8"/>
+    <!-- 頭（ブルーグレー） -->
+    <ellipse cx="100" cy="108" rx="50" ry="46" fill="url(#bodyGrad10)"/>
+    <ellipse cx="100" cy="88" rx="22" ry="14" fill="#c8d8ee" opacity="0.3"/>
+    <!-- 目 -->
+    <ellipse cx="85" cy="107" rx="11" ry="10" fill="#e0eeee"/>
+    <ellipse cx="115" cy="107" rx="11" ry="10" fill="#e0eeee"/>
+    <ellipse cx="85" cy="107" rx="8" ry="8.5" fill="url(#eyeGrad10)"/>
+    <ellipse cx="115" cy="107" rx="8" ry="8.5" fill="url(#eyeGrad10)"/>
+    <ellipse cx="85" cy="107" rx="2.5" ry="7" fill="#050505"/>
+    <ellipse cx="115" cy="107" rx="2.5" ry="7" fill="#050505"/>
+    <circle cx="88" cy="104" r="2.5" fill="white" opacity="0.9"/>
+    <circle cx="118" cy="104" r="2.5" fill="white" opacity="0.9"/>
+    <!-- 鼻・口 -->
+    <ellipse cx="100" cy="121" rx="5" ry="4" fill="#cc8899"/>
+    <path d="M95,125 Q100,130 105,125" fill="none" stroke="#6677aa" stroke-width="1.5"/>
+    <line x1="100" y1="125" x2="100" y2="127" stroke="#6677aa" stroke-width="1.5"/>
+    <!-- ひげ（シルバー） -->
+    <line x1="94" y1="121" x2="56" y2="115" stroke="#ddeeff" stroke-width="1" opacity="0.9"/>
+    <line x1="94" y1="122" x2="55" y2="122" stroke="#ddeeff" stroke-width="1" opacity="0.9"/>
+    <line x1="94" y1="123" x2="57" y2="129" stroke="#ddeeff" stroke-width="1" opacity="0.9"/>
+    <line x1="106" y1="121" x2="144" y2="115" stroke="#ddeeff" stroke-width="1" opacity="0.9"/>
+    <line x1="106" y1="122" x2="145" y2="122" stroke="#ddeeff" stroke-width="1" opacity="0.9"/>
+    <line x1="106" y1="123" x2="143" y2="129" stroke="#ddeeff" stroke-width="1" opacity="0.9"/>
+    <!-- 前脚 -->
+    <ellipse cx="76" cy="214" rx="21" ry="11" fill="#8899bb"/>
+    <ellipse cx="124" cy="214" rx="21" ry="11" fill="#8899bb"/>
+    <line x1="66" y1="212" x2="66" y2="220" stroke="#6677aa" stroke-width="1.3" opacity="0.7"/>
+    <line x1="72" y1="210" x2="72" y2="219" stroke="#6677aa" stroke-width="1.3" opacity="0.7"/>
+    <line x1="80" y1="210" x2="80" y2="219" stroke="#6677aa" stroke-width="1.3" opacity="0.7"/>
+    <line x1="86" y1="212" x2="86" y2="220" stroke="#6677aa" stroke-width="1.3" opacity="0.7"/>
+    <line x1="114" y1="212" x2="114" y2="220" stroke="#6677aa" stroke-width="1.3" opacity="0.7"/>
+    <line x1="120" y1="210" x2="120" y2="219" stroke="#6677aa" stroke-width="1.3" opacity="0.7"/>
+    <line x1="128" y1="210" x2="128" y2="219" stroke="#6677aa" stroke-width="1.3" opacity="0.7"/>
+    <line x1="134" y1="212" x2="134" y2="220" stroke="#6677aa" stroke-width="1.3" opacity="0.7"/>
+  </g>
+
+  <!-- 名前プレート -->
+  <rect x="12" y="224" width="176" height="44" rx="6" fill="#0d1525"/>
+  <text x="100" y="250" text-anchor="middle" font-family="'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', sans-serif" font-size="16" font-weight="bold" fill="#cccccc">ロシアンブルー</text>
+  <text x="100" y="263" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4dabf7">RUSSIAN BLUE</text>
+</svg>
