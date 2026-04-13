@@ -149,7 +149,6 @@ html, body {
   border: 2px solid var(--color-border);
   border-radius: var(--radius);
   padding: 12px 10px;
-  /* 横幅を最大化：画面幅から余白・ギャップを引いて3等分、上限220px */
   width: min(calc((100vw - 52px) / 3), 220px);
   cursor: default;
   transition: border-color var(--transition), transform var(--transition);
@@ -213,33 +212,29 @@ html, body {
 
 /* ===== ドロー画面レイアウト ===== */
 
-/* カードリストをカラム方向に変更（上段3枚・下段2枚の行を縦に並べる） */
 #draw-card-list,
 #prep-card-list {
   flex-direction: column;
   gap: 10px;
 }
 
-/* 各行：カードを中央寄せで横並び */
 .draw-row {
   display: flex;
   justify-content: center;
   gap: 10px;
 }
 
-/* カード名が長くても崩れないよう省略表示 */
 .cat-card .card-name {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-/* 画像ありカード：SVG画像でカード全体を覆う */
+/* 画像ありカード */
 .cat-card.has-image {
   padding: 0;
   background: transparent;
   border: none;
-  /* border-radiusとoverflow:hiddenでSVGを角丸にクリップ */
   overflow: hidden;
 }
 
@@ -259,7 +254,6 @@ html, body {
 
 /* ===== レアリティ演出 ===== */
 
-/* 画面フラッシュ */
 @keyframes flash-anim {
   0%   { opacity: 0; }
   25%  { opacity: 0.85; }
@@ -277,7 +271,6 @@ html, body {
 .flash-sr { background: #ffffff; }
 .flash-lr { background: #ffe066; }
 
-/* パーティクル（LR専用） */
 @keyframes particle-anim {
   0%   { opacity: 1; transform: translateY(0) scale(1); }
   100% { opacity: 0; transform: translateY(-200px) scale(0.2); }
@@ -294,7 +287,6 @@ html, body {
 
 /* ===== カードドロー演出 ===== */
 
-/* フリップラッパー：perspective コンテナ兼フェードイン */
 .card-flip-wrapper {
   perspective: 800px;
   opacity: 0;
@@ -307,7 +299,6 @@ html, body {
   transform: translateY(0);
 }
 
-/* 3D 回転させる内側の平面：裏向き（180deg）からスタート */
 .card-flip-inner {
   position: relative;
   transform-style: preserve-3d;
@@ -319,13 +310,11 @@ html, body {
   transform: rotateY(0deg);
 }
 
-/* 表面（既存の cat-card を流用） */
 .card-flip-inner .cat-card {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
 
-/* 裏面：カードと同サイズで絶対配置 */
 .card-flip-back {
   position: absolute;
   inset: 0;
@@ -334,7 +323,6 @@ html, body {
   border-radius: var(--radius);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  /* 裏面は inner の 180deg に対してさらに 180deg 回転させ、視聴者方向を向かせる */
   transform: rotateY(180deg);
 }
 
@@ -370,7 +358,6 @@ html, body {
 
 /* ===== 猫選択画面 フリップカード ===== */
 
-/* 外側ラッパー：perspectiveコンテナ */
 .cat-select-flip {
   width: min(calc((100vw - 52px) / 3), 220px);
   flex-shrink: 0;
@@ -379,16 +366,15 @@ html, body {
   border-radius: var(--radius);
 }
 
-/* 選択状態：外側のアウトラインで表裏どちらでも見える */
 .cat-select-flip.selected {
   outline: 3px solid var(--color-accent);
   outline-offset: 2px;
 }
 
-/* 3D回転する内側コンテナ */
 .cat-select-inner {
   position: relative;
   width: 100%;
+  aspect-ratio: 200 / 280;
   transform-style: preserve-3d;
   transition: transform 0.5s ease;
 }
@@ -397,7 +383,6 @@ html, body {
   transform: rotateY(180deg);
 }
 
-/* 表面 */
 .cat-select-front {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
@@ -411,7 +396,6 @@ html, body {
   height: auto;
 }
 
-/* 画像なしカードの表面プレースホルダー */
 .csf-placeholder {
   aspect-ratio: 200 / 280;
   background: var(--color-card);
@@ -434,7 +418,6 @@ html, body {
   color: var(--color-text);
 }
 
-/* 裏面：表面に重ねて絶対配置、初期は裏向き */
 .cat-select-back {
   position: absolute;
   inset: 0;
@@ -451,13 +434,11 @@ html, body {
   overflow: hidden;
 }
 
-/* 裏面レアリティ枠色 */
 .cat-select-back[data-rarity="N"] { border-color: var(--rarity-n); }
 .cat-select-back[data-rarity="R"] { border-color: var(--rarity-r); }
 .cat-select-back[data-rarity="SR"] { border-color: var(--rarity-sr); }
 .cat-select-back[data-rarity="LR"] { border-color: var(--rarity-lr); }
 
-/* 裏面：レアリティラベル */
 .csb-rarity {
   font-size: 0.7rem;
   font-weight: 700;
@@ -469,7 +450,6 @@ html, body {
 .cat-select-back[data-rarity="SR"] .csb-rarity { color: var(--rarity-sr); }
 .cat-select-back[data-rarity="LR"] .csb-rarity { color: var(--rarity-lr); }
 
-/* 裏面：カード名 */
 .csb-name {
   font-size: 0.9rem;
   font-weight: 700;
@@ -478,7 +458,6 @@ html, body {
   text-overflow: ellipsis;
 }
 
-/* 裏面：ステータス一覧 */
 .csb-stats {
   display: flex;
   flex-direction: column;
@@ -492,7 +471,6 @@ html, body {
   justify-content: space-between;
 }
 
-/* 裏面：スクロールエリア（ボタン以外のコンテンツをまとめる） */
 .csb-scroll-area {
   flex: 1;
   min-height: 0;
@@ -503,7 +481,6 @@ html, body {
   gap: 6px;
 }
 
-/* 裏面：一言説明 */
 .csb-desc {
   font-size: 0.7rem;
   color: var(--color-text-sub);
@@ -512,7 +489,6 @@ html, body {
   margin-top: auto;
 }
 
-/* 裏面：選択ボタン（常に下部に固定表示） */
 .csb-select-btn {
   flex-shrink: 0;
   margin-top: 4px;
@@ -524,7 +500,6 @@ html, body {
   font-size: 0.8rem;
   font-weight: 700;
   cursor: pointer;
-  /* タップ遅延を防止 */
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
   transition: background var(--transition), color var(--transition);
@@ -535,14 +510,12 @@ html, body {
   color: #fff;
 }
 
-/* フリップ時：表面のタッチを無効化（裏面ボタンへの干渉を防ぐ） */
 .cat-select-flip.flipped .cat-select-front {
   pointer-events: none;
 }
 
 /* ===== 猫選択画面 プレビューエリア ===== */
 
-/* 選択済みカードのプレビューエリア */
 .cat-select-preview {
   display: flex;
   flex-wrap: wrap;
@@ -554,7 +527,6 @@ html, body {
   border-top: 1px solid var(--color-border);
 }
 
-/* プレビューエリアのラベル */
 .cat-select-preview-label {
   width: 100%;
   text-align: center;
@@ -619,14 +591,28 @@ html, body {
   font-size: 0.78rem;
 }
 
-/* 猫カード+装備セレクトのスロット */
-.cat-equip-slot {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
+/* バトル準備画面：カード行 */
+#prep-card-list .cat-card {
+  width: min(calc((100vw - 52px) / 3), 220px);
+  flex-shrink: 0;
+  align-self: flex-start;
 }
 
+/* バトル準備画面：アイテム選択行 */
+.prep-item-row {
+  gap: 10px;
+}
+
+.prep-item-wrap {
+  width: min(calc((100vw - 52px) / 3), 220px);
+  flex-shrink: 0;
+}
+
+.prep-item-wrap .equip-select {
+  width: 100%;
+}
+
+/* 装備セレクト共通 */
 .equip-select {
   width: 100%;
   padding: 4px 6px;
@@ -636,22 +622,6 @@ html, body {
   color: var(--color-text);
   font-size: 0.78rem;
   cursor: pointer;
-}
-
-/* バトル準備画面：スロットをflex均等分割、カードをスロット幅100%に合わせる */
-#prep-card-list .cat-equip-slot {
-  flex: 1;
-  min-width: 0;
-  max-width: 220px;
-}
-
-#prep-card-list .cat-card {
-  width: 100%;
-}
-
-/* カードとドロップダウンの間隔を追加確保 */
-#prep-card-list .equip-select {
-  margin-top: 12px;
 }
 
 /* 装備エリア（後方互換） */

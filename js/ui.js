@@ -3,7 +3,6 @@
 
 // ===== 画面切替 =====
 
-// 指定IDの画面のみ表示する
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(el => {
     el.classList.remove('active');
@@ -17,7 +16,6 @@ function showScreen(id) {
 
 // ===== 猫カードHTML生成 =====
 
-// カードオブジェクトからカード要素を生成して返す
 function createCatCardEl(card, options = {}) {
   const el = document.createElement('div');
   el.className = 'cat-card';
@@ -25,20 +23,17 @@ function createCatCardEl(card, options = {}) {
   el.dataset.rarity = card.rarity;
 
   if (card.image) {
-    // 画像ありカード：SVG画像のみ表示
     el.classList.add('has-image');
     const img = document.createElement('img');
     img.className = 'card-image';
     img.src = card.image;
     img.alt = card.name;
-    // 読み込み失敗時：プレースホルダーにフォールバック
     img.onerror = () => {
       el.classList.remove('has-image');
       el.innerHTML = `<div class="card-rarity">${card.rarity}</div><div class="card-placeholder">🐱</div>`;
     };
     el.appendChild(img);
   } else {
-    // 画像なしカード（R/SR/LR）：レアリティと絵文字プレースホルダーを表示
     el.innerHTML = `
       <div class="card-rarity">${card.rarity}</div>
       <div class="card-placeholder">🐱</div>
@@ -59,7 +54,6 @@ document.getElementById('btn-start').addEventListener('click', () => {
 
 // ===== カードドロー画面 =====
 
-// 画面フラッシュエフェクト（SR: 白、LR: 金）
 function showFlash(type) {
   const el = document.createElement('div');
   el.className = `flash-overlay flash-${type}`;
@@ -67,7 +61,6 @@ function showFlash(type) {
   el.addEventListener('animationend', () => el.remove());
 }
 
-// 金色パーティクルエフェクト（LR専用）
 function showParticles() {
   const count = 24;
   for (let i = 0; i < count; i++) {
@@ -89,7 +82,6 @@ function renderDrawScreen() {
   list.innerHTML = '';
   document.getElementById('draw-item-points').textContent = GameState.itemPoints;
 
-  // 上段3枚・下段2枚のレイアウト用の行を用意
   const topRow = document.createElement('div');
   topRow.className = 'draw-row';
   const bottomRow = document.createElement('div');
@@ -97,29 +89,24 @@ function renderDrawScreen() {
   list.appendChild(topRow);
   list.appendChild(bottomRow);
 
-  // SR/LRはフリップ前に演出を挟むため累積ディレイで管理
   let delay = 0;
 
   GameState.deck.forEach((card, index) => {
-    // フリップ構造を構築
     const wrapper = document.createElement('div');
     wrapper.className = 'card-flip-wrapper';
 
     const inner = document.createElement('div');
     inner.className = 'card-flip-inner';
 
-    // 裏面
     const back = document.createElement('div');
     back.className = 'card-flip-back';
 
-    // 表面（既存の関数で生成）
     const front = createCatCardEl(card);
 
     inner.appendChild(back);
     inner.appendChild(front);
     wrapper.appendChild(inner);
 
-    // 0〜2枚目は上段、3〜4枚目は下段
     const row = index < 3 ? topRow : bottomRow;
     row.appendChild(wrapper);
 
@@ -128,11 +115,9 @@ function renderDrawScreen() {
     const cardDelay = delay;
 
     setTimeout(() => {
-      // 裏向きで出現
       wrapper.classList.add('revealed');
 
       if (isSR || isLR) {
-        // レアリティ演出：出現150ms後にフラッシュ→400ms後にフリップ
         setTimeout(() => {
           showFlash(isLR ? 'lr' : 'sr');
           if (isLR) showParticles();
@@ -141,20 +126,17 @@ function renderDrawScreen() {
           }, 400);
         }, 150);
       } else {
-        // N/R：200ms後に即フリップ
         setTimeout(() => {
           wrapper.classList.add('flipped');
         }, 200);
       }
     }, cardDelay);
 
-    // レアリティに応じて次のカードまでの間隔を設定
     delay += isLR ? 2000 : isSR ? 1500 : 600;
   });
 }
 
 document.getElementById('btn-draw-next').addEventListener('click', () => {
-  // ステージ1のみ猫選択画面へ、2戦目以降はスキップ
   if (GameState.selectedCatIds.length === 0) {
     renderCatSelectScreen();
     showScreen('screen-cat-select');
@@ -166,10 +148,8 @@ document.getElementById('btn-draw-next').addEventListener('click', () => {
 
 // ===== 猫選択画面 =====
 
-// 選択中のカードIDセット（猫選択画面専用）
 let catSelectIds = new Set();
 
-// 選択済みカードをプレビューエリアに表示
 function renderCatSelectPreview() {
   const area = document.getElementById('cat-select-preview');
   area.innerHTML = '';
@@ -186,8 +166,6 @@ function renderCatSelectPreview() {
   });
 }
 
-// 猫選択画面用フリップカードを生成する
-// 表面: SVG画像、裏面: ステータス+選択ボタン
 function createCatSelectFlipEl(card) {
   const wrapper = document.createElement('div');
   wrapper.className = 'cat-select-flip';
@@ -197,7 +175,6 @@ function createCatSelectFlipEl(card) {
   const inner = document.createElement('div');
   inner.className = 'cat-select-inner';
 
-  // ===== 表面（画像） =====
   const front = document.createElement('div');
   front.className = 'cat-select-front';
 
@@ -213,7 +190,6 @@ function createCatSelectFlipEl(card) {
     front.innerHTML = `<div class="csf-placeholder">${card.rarity}<br>🐱<br><span>${card.name}</span></div>`;
   }
 
-  // ===== 裏面（ステータス） =====
   const back = document.createElement('div');
   back.className = 'cat-select-back';
   back.dataset.rarity = card.rarity;
@@ -252,7 +228,6 @@ function renderCatSelectScreen() {
   const list = document.getElementById('cat-select-list');
   list.innerHTML = '';
 
-  // 上段3枚・下段2枚のレイアウト
   const topRow = document.createElement('div');
   topRow.className = 'draw-row';
   const bottomRow = document.createElement('div');
@@ -263,12 +238,10 @@ function renderCatSelectScreen() {
   GameState.deck.forEach((card, index) => {
     const { wrapper, selectBtn } = createCatSelectFlipEl(card);
 
-    // カードクリック → フリップ（表裏切り替え）
     wrapper.addEventListener('click', () => {
       wrapper.classList.toggle('flipped');
     });
 
-    // 選択ボタンクリック → 選択状態トグル（フリップはしない）
     selectBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       if (catSelectIds.has(card.id)) {
@@ -320,40 +293,32 @@ document.getElementById('btn-stage-to-prep').addEventListener('click', () => {
 
 // ===== バトル準備画面 =====
 
-// 選択中のカードIDセット
 let prepSelectedIds = new Set();
-// 各カードの行動 { cardId: 'attack' | 'charm' }
 let prepCatActions = {};
-// 各カードのアイテム装備 { cardId: itemId | null }
 let prepEquippedItems = {};
-// 購入済みアイテム在庫数 { itemId: count }
 let purchasedItems = {};
-// チーム全体の行動（'attack' | 'charm'）
 let prepTeamAction = 'attack';
 
 function renderBattlePrepScreen() {
-  // 猫選択画面で選んだ3匹を固定で使用
   prepSelectedIds = new Set(GameState.selectedCatIds);
   prepCatActions = {};
   prepEquippedItems = {};
-  prepTeamAction = 'attack'; // デフォルトは攻撃主体
+  prepTeamAction = 'attack';
   purchasedItems = {};
 
   renderPrepItemShop();
-  renderPrepEquipArea(); // カードと装備セレクトを一体で描画
+  renderPrepEquipArea();
   renderPrepActionList();
   updateBattleStartBtn();
 }
 
-// カード選択トグル
 function togglePrepCardSelect(cardId) {
   if (prepSelectedIds.has(cardId)) {
     prepSelectedIds.delete(cardId);
   } else {
-    if (prepSelectedIds.size >= 3) return; // 3匹まで
+    if (prepSelectedIds.size >= 3) return;
     prepSelectedIds.add(cardId);
   }
-  // 選択状態をDOMに反映
   document.querySelectorAll('#prep-card-list .cat-card').forEach(el => {
     if (prepSelectedIds.has(el.dataset.id)) {
       el.classList.add('selected');
@@ -367,7 +332,6 @@ function togglePrepCardSelect(cardId) {
   updateBattleStartBtn();
 }
 
-// アイテムショップ表示
 function renderPrepItemShop() {
   const shop = document.getElementById('prep-item-shop');
   shop.innerHTML = '';
@@ -386,15 +350,14 @@ function renderPrepItemShop() {
       if (buyItem(item.id)) {
         purchasedItems[item.id] = (purchasedItems[item.id] || 0) + 1;
         document.getElementById('prep-item-points').textContent = GameState.itemPoints;
-        renderPrepItemShop();   // ポイント更新後に再描画
-        renderPrepEquipArea();  // 装備セレクト更新
+        renderPrepItemShop();
+        renderPrepEquipArea();
       }
     });
     shop.appendChild(btn);
   });
 }
 
-// 指定カード以外の装備を除いた残り在庫数を返す
 function getItemAvailableCount(itemId, excludeCardId) {
   const total = purchasedItems[itemId] || 0;
   const usedByOthers = [...prepSelectedIds]
@@ -403,26 +366,32 @@ function getItemAvailableCount(itemId, excludeCardId) {
   return total - usedByOthers;
 }
 
-// 猫カードと装備セレクトを一体で #prep-card-list に描画
+// カード行とアイテム選択行を分離して描画
 function renderPrepEquipArea() {
   const list = document.getElementById('prep-card-list');
   list.innerHTML = '';
 
-  const row = document.createElement('div');
-  row.className = 'draw-row';
-  list.appendChild(row);
+  // ── カード行 ──
+  const cardRow = document.createElement('div');
+  cardRow.className = 'draw-row';
+
+  // ── アイテム選択行 ──
+  const itemRow = document.createElement('div');
+  itemRow.className = 'draw-row prep-item-row';
+
+  list.appendChild(cardRow);
+  list.appendChild(itemRow);
 
   GameState.selectedCatIds.forEach(cardId => {
     const card = GameState.deck.find(c => c.id === cardId);
 
-    // スロット：猫カード + 装備セレクトを縦に並べる
-    const slot = document.createElement('div');
-    slot.className = 'cat-equip-slot';
+    // カード（カード行に追加）
+    cardRow.appendChild(createCatCardEl(card));
 
-    // 猫カード（表示のみ）
-    slot.appendChild(createCatCardEl(card));
+    // アイテム選択（アイテム行に追加）
+    const itemWrap = document.createElement('div');
+    itemWrap.className = 'prep-item-wrap';
 
-    // 装備セレクト
     const select = document.createElement('select');
     select.className = 'equip-select';
 
@@ -431,7 +400,6 @@ function renderPrepEquipArea() {
     noneOpt.textContent = 'アイテムなし';
     select.appendChild(noneOpt);
 
-    // 在庫があるアイテムのみ選択肢に追加（自分が装備中のものは常に表示）
     Object.keys(purchasedItems).forEach(itemId => {
       const isEquippedHere = prepEquippedItems[cardId] === itemId;
       const available = getItemAvailableCount(itemId, cardId);
@@ -447,20 +415,17 @@ function renderPrepEquipArea() {
 
     select.addEventListener('change', () => {
       prepEquippedItems[cardId] = select.value || null;
-      // 在庫変更を全猫のセレクトに反映
       renderPrepEquipArea();
     });
 
     if (prepEquippedItems[cardId] === undefined) prepEquippedItems[cardId] = null;
 
-    slot.appendChild(select);
-    row.appendChild(slot);
+    itemWrap.appendChild(select);
+    itemRow.appendChild(itemWrap);
   });
 }
 
-// 行動選択エリア表示（チーム全体で1択）
 function renderPrepActionList() {
-  // 全員の catActions を現在のチーム行動で更新
   prepSelectedIds.forEach(id => {
     prepCatActions[id] = prepTeamAction;
   });
@@ -496,7 +461,6 @@ function renderPrepActionList() {
   list.appendChild(toggle);
 }
 
-// バトル開始ボタンの活性制御
 function updateBattleStartBtn() {
   const btn = document.getElementById('btn-battle-start');
   btn.disabled = prepSelectedIds.size < 3;
@@ -514,18 +478,14 @@ document.getElementById('btn-battle-start').addEventListener('click', () => {
 function renderBattleScreen() {
   const b = GameState.battle;
 
-  // 敵情報
   document.getElementById('battle-enemy-name').textContent = b.enemy.name;
   updateEnemyGauges();
 
-  // 猫ステータス
   renderBattleCats();
 
-  // ログクリア
   const logEl = document.getElementById('battle-log');
   logEl.innerHTML = '';
 
-  // 初期ログ（アイテム発動等）を順番に表示してから最初のラウンドを開始
   const initLogs = [...b.log];
   b.log = [];
   displayLogsSequentially(initLogs, () => {
@@ -533,7 +493,6 @@ function renderBattleScreen() {
   });
 }
 
-// 敵HPゲージ・魅了度ゲージを更新
 function updateEnemyGauges() {
   const b = GameState.battle;
 
@@ -548,7 +507,6 @@ function updateEnemyGauges() {
     `${b.enemyCharmMeter}/100`;
 }
 
-// バトル中の猫カードを描画
 function renderBattleCats() {
   const b = GameState.battle;
   const area = document.getElementById('battle-cat-area');
@@ -576,7 +534,6 @@ function renderBattleCats() {
   });
 }
 
-// ログ行を1行ずつ500ms間隔で追記し、完了後にコールバックを呼ぶ
 function displayLogsSequentially(lines, onComplete) {
   if (lines.length === 0) {
     onComplete();
@@ -599,13 +556,11 @@ function displayLogsSequentially(lines, onComplete) {
   showNext();
 }
 
-// バトルループ開始（最初のラウンドを準備して最初の行動へ）
 function startBattleLoop() {
   startNewRound();
   processNextAction();
 }
 
-// 1アクション実行 → ログ表示 → UI更新 → 次へ
 function processNextAction() {
   const b = GameState.battle;
   if (!b) return;
@@ -622,24 +577,20 @@ function processNextAction() {
     if (status === 'battle_end') {
       handleBattleEnd();
     } else if (status === 'round_end') {
-      // ラウンド終了 → 少し待って次ラウンドを開始
       setTimeout(() => {
         startNewRound();
         processNextAction();
       }, 600);
     } else {
-      // 次のアクションへ
       setTimeout(processNextAction, 200);
     }
   });
 }
 
-// バトル終了時の画面遷移
 function handleBattleEnd() {
   const b = GameState.battle;
   if (b.result === 'win_hp' || b.result === 'win_charm') {
     setTimeout(() => {
-      // ステージ5クリアはクリア画面をスキップしてエンディングへ
       if (GameState.currentStage === 5) {
         showScreen('screen-ending');
       } else {
@@ -663,7 +614,6 @@ function renderStageClearScreen() {
     : `${b.enemy.name}を撃破した！`;
   document.getElementById('stage-clear-msg').textContent = winMsg;
 
-  // 出撃した3匹をバトル後のHPで表示
   const area = document.getElementById('stage-clear-cats');
   area.innerHTML = '';
   const row = document.createElement('div');
@@ -686,7 +636,6 @@ document.getElementById('btn-reward-points').addEventListener('click', () => {
   advanceToNextStageOrEnding();
 });
 
-// 報酬選択後の遷移
 function advanceToNextStageOrEnding() {
   advanceStage();
   if (isGameClear()) {
