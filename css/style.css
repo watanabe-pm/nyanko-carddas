@@ -177,6 +177,9 @@ html, body {
   font-size: 1rem;
   font-weight: 700;
   margin-bottom: 8px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .cat-card .card-stats {
@@ -235,12 +238,6 @@ html, body {
   gap: 10px;
 }
 
-.cat-card .card-name {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
 /* 画像ありカード */
 .cat-card.has-image {
   padding: 0;
@@ -255,12 +252,47 @@ html, body {
   height: auto;
 }
 
+/* 画像ありかつHP表示あり：下部にパディングを確保 */
+.cat-card.has-image.has-hp {
+  padding: 0 0 10px 0;
+  overflow: visible;
+}
+
 /* 画像なしカードの絵文字プレースホルダー */
 .card-placeholder {
   font-size: 2.5rem;
   text-align: center;
   padding: 8px 0;
   line-height: 1;
+}
+
+/* ===== カードHP表示 ===== */
+.cat-card.has-hp {
+  padding-bottom: 10px;
+}
+
+.card-hp-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px 0;
+  font-size: 0.78rem;
+}
+
+.card-hp-label {
+  color: var(--color-text-sub);
+  flex-shrink: 0;
+}
+
+.card-hp-wrap .gauge-bar {
+  flex: 1;
+  height: 8px;
+}
+
+.card-hp-text {
+  color: var(--color-text-sub);
+  flex-shrink: 0;
+  font-size: 0.72rem;
 }
 
 /* ===== レアリティ演出 ===== */
