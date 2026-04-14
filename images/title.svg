@@ -1,0 +1,191 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220">
+  <defs>
+    <!-- 窓の陽光グロー -->
+    <radialGradient id="gSun" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffe080" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#d8c8a8" stop-opacity="0"/>
+    </radialGradient>
+    <!-- 怪獣の赤いオーラ -->
+    <radialGradient id="gMonster" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#e94560" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="#d8c8a8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- ===== 背景（明るい室内） ===== -->
+  <!-- 壁 -->
+  <rect width="360" height="220" fill="#d8c8a8"/>
+  <!-- 床 -->
+  <rect y="158" width="360" height="62" fill="#b88a50"/>
+  <line x1="0" y1="158" x2="360" y2="158" stroke="#8a6430" stroke-width="2"/>
+  <!-- 床の木目 -->
+  <line x1="0" y1="170" x2="360" y2="170" stroke="#a07840" stroke-width="0.8" opacity="0.5"/>
+  <line x1="0" y1="185" x2="360" y2="185" stroke="#a07840" stroke-width="0.8" opacity="0.5"/>
+  <line x1="0" y1="200" x2="360" y2="200" stroke="#a07840" stroke-width="0.8" opacity="0.5"/>
+
+  <!-- 窓 -->
+  <rect x="143" y="8" width="74" height="102" rx="4" fill="#c8e0f8"/>
+  <!-- 陽光グロー -->
+  <ellipse cx="180" cy="55" rx="65" ry="75" fill="url(#gSun)"/>
+  <!-- 太陽 -->
+  <circle cx="180" cy="35" r="20" fill="#ffe566"/>
+  <circle cx="180" cy="35" r="14" fill="#ffcc00"/>
+  <!-- 太陽の光線 -->
+  <line x1="180" y1="11" x2="180" y2="5"  stroke="#ffe566" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="197" y1="18" x2="201" y2="14" stroke="#ffe566" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="207" y1="35" x2="213" y2="35" stroke="#ffe566" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="163" y1="18" x2="159" y2="14" stroke="#ffe566" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="153" y1="35" x2="147" y2="35" stroke="#ffe566" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- 窓枠十字線 -->
+  <line x1="180" y1="10" x2="180" y2="108" stroke="#9a8a68" stroke-width="1.5"/>
+  <line x1="145" y1="58" x2="215" y2="58" stroke="#9a8a68" stroke-width="1.5"/>
+  <!-- 窓の外枠 -->
+  <rect x="143" y="8" width="74" height="102" rx="4" fill="none" stroke="#8a7050" stroke-width="2.5"/>
+
+  <!-- カーテン（左） -->
+  <path d="M130,8 Q118,55 124,110 L144,110 L144,8 Z" fill="#c07830"/>
+  <path d="M132,8 Q122,50 127,110 L138,110 L138,8 Z" fill="#d08840" opacity="0.6"/>
+  <!-- カーテン（右） -->
+  <path d="M230,8 Q242,55 236,110 L216,110 L216,8 Z" fill="#c07830"/>
+  <path d="M228,8 Q238,50 233,110 L222,110 L222,8 Z" fill="#d08840" opacity="0.6"/>
+
+  <!-- 怪獣の赤いオーラ（右側） -->
+  <ellipse cx="278" cy="110" rx="90" ry="90" fill="url(#gMonster)"/>
+
+  <!-- ===== 猫（左） ===== -->
+  <!-- 床の影 -->
+  <ellipse cx="88" cy="173" rx="30" ry="7" fill="#8a6430" opacity="0.3"/>
+
+  <!-- 尻尾 -->
+  <path d="M108,148 Q145,125 140,95 Q137,80 125,86" stroke="#ccc8e0" stroke-width="9" stroke-linecap="round" fill="none"/>
+  <path d="M108,148 Q145,125 140,95 Q137,80 125,86" stroke="#eeeaff" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.5"/>
+
+  <!-- 体 -->
+  <ellipse cx="88" cy="140" rx="28" ry="32" fill="#ccc8e0"/>
+  <ellipse cx="88" cy="142" rx="18" ry="22" fill="#eee8ff" opacity="0.6"/>
+
+  <!-- 後ろ足 -->
+  <ellipse cx="70" cy="168" rx="14" ry="8" fill="#b8b4cc"/>
+  <ellipse cx="108" cy="168" rx="14" ry="8" fill="#b8b4cc"/>
+
+  <!-- ===== 盾（左腕） ===== -->
+  <!-- 左腕 -->
+  <path d="M72,138 Q56,142 50,150" stroke="#ccc8e0" stroke-width="10" stroke-linecap="round" fill="none"/>
+  <!-- 盾の本体（丸盾） -->
+  <circle cx="44" cy="152" r="20" fill="#4a7ab8"/>
+  <circle cx="44" cy="152" r="16" fill="#5a8acc"/>
+  <circle cx="44" cy="152" r="20" fill="none" stroke="#2a4a88" stroke-width="2.5"/>
+  <!-- 盾のデザイン（肉球マーク） -->
+  <circle cx="44" cy="155" r="6"   fill="#3a5fa0"/>
+  <circle cx="38" cy="148" r="3"   fill="#3a5fa0"/>
+  <circle cx="50" cy="148" r="3"   fill="#3a5fa0"/>
+  <circle cx="36" cy="155" r="2.5" fill="#3a5fa0"/>
+  <circle cx="52" cy="155" r="2.5" fill="#3a5fa0"/>
+  <!-- 盾の中央ボス -->
+  <circle cx="44" cy="152" r="4" fill="#80b0f0"/>
+
+  <!-- ===== 剣（右腕） ===== -->
+  <!-- 右腕 -->
+  <path d="M105,128 Q118,120 126,116" stroke="#ccc8e0" stroke-width="11" stroke-linecap="round" fill="none"/>
+  <!-- 柄（グリップ） -->
+  <line x1="126" y1="116" x2="113" y2="119" stroke="#7a4820" stroke-width="8" stroke-linecap="round"/>
+  <!-- 鍔（クロスガード） -->
+  <line x1="124" y1="105" x2="128" y2="128" stroke="#c8a860" stroke-width="8" stroke-linecap="round"/>
+  <!-- 刃（ブレード） -->
+  <polygon points="190,104 128,120 125,113" fill="#d8e0f0"/>
+  <polygon points="188,105 128,119 126,114" fill="#eef2ff"/>
+  <!-- 刃の光沢線 -->
+  <line x1="188" y1="105" x2="128" y2="117" stroke="#fff" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+
+  <!-- 頭 -->
+  <circle cx="86" cy="95" r="26" fill="#ccc8e0"/>
+  <ellipse cx="86" cy="100" rx="17" ry="15" fill="#eee8ff" opacity="0.5"/>
+
+  <!-- 耳（左） -->
+  <polygon points="67,80 59,54 81,74" fill="#ccc8e0"/>
+  <polygon points="69,78 63,58 79,73" fill="#e8a0b8" opacity="0.7"/>
+  <!-- 耳（右） -->
+  <polygon points="100,76 108,52 116,74" fill="#ccc8e0"/>
+  <polygon points="101,75 108,56 114,73" fill="#e8a0b8" opacity="0.7"/>
+
+  <!-- 目（右向き・真剣な表情） -->
+  <ellipse cx="80" cy="93" rx="6" ry="7" fill="#fff"/>
+  <ellipse cx="81" cy="93" rx="4" ry="5" fill="#1a1a3e"/>
+  <circle cx="82" cy="91" r="1.5" fill="#fff"/>
+  <ellipse cx="95" cy="93" rx="6" ry="7" fill="#fff"/>
+  <ellipse cx="96" cy="93" rx="4" ry="5" fill="#1a1a3e"/>
+  <circle cx="97" cy="91" r="1.5" fill="#fff"/>
+
+  <!-- 眉毛（真剣） -->
+  <line x1="76" y1="85" x2="85" y2="83" stroke="#8880a0" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="91" y1="83" x2="100" y2="85" stroke="#8880a0" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- ひげ -->
+  <line x1="58" y1="102" x2="72" y2="104" stroke="#9990b8" stroke-width="1" opacity="0.8"/>
+  <line x1="58" y1="107" x2="72" y2="106" stroke="#9990b8" stroke-width="1" opacity="0.8"/>
+  <line x1="100" y1="104" x2="114" y2="102" stroke="#9990b8" stroke-width="1" opacity="0.8"/>
+  <line x1="100" y1="106" x2="114" y2="107" stroke="#9990b8" stroke-width="1" opacity="0.8"/>
+
+  <!-- 鼻 -->
+  <ellipse cx="86" cy="103" rx="3" ry="2" fill="#e8a0b8"/>
+
+  <!-- ===== 怪獣（右） ===== -->
+  <!-- 床の影 -->
+  <ellipse cx="278" cy="173" rx="48" ry="11" fill="#8a6430" opacity="0.4"/>
+
+  <!-- 尻尾 -->
+  <path d="M315,150 Q348,138 350,165 Q352,180 335,180" fill="#1e0d36" stroke="#35185a" stroke-width="1.5"/>
+
+  <!-- 体 -->
+  <ellipse cx="278" cy="142" rx="44" ry="48" fill="#1e0d36"/>
+  <ellipse cx="278" cy="148" rx="28" ry="34" fill="#2c1250" opacity="0.7"/>
+
+  <!-- 左腕（猫に向けて伸ばす） -->
+  <path d="M238,128 Q212,116 198,122" stroke="#1e0d36" stroke-width="16" stroke-linecap="round" fill="none"/>
+  <!-- 爪 -->
+  <line x1="198" y1="122" x2="186" y2="112" stroke="#3a1a60" stroke-width="3" stroke-linecap="round"/>
+  <line x1="198" y1="122" x2="183" y2="119" stroke="#3a1a60" stroke-width="3" stroke-linecap="round"/>
+  <line x1="198" y1="122" x2="185" y2="128" stroke="#3a1a60" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- 右腕 -->
+  <path d="M318,128 Q340,112 345,120" stroke="#1e0d36" stroke-width="14" stroke-linecap="round" fill="none"/>
+
+  <!-- 頭 -->
+  <ellipse cx="275" cy="86" rx="48" ry="44" fill="#1e0d36"/>
+
+  <!-- ツノ（左） -->
+  <polygon points="248,55 238,18 264,50" fill="#1e0d36"/>
+  <polygon points="250,53 242,22 262,49" fill="#2c1250"/>
+  <!-- ツノ（右） -->
+  <polygon points="300,52 310,16 285,48" fill="#1e0d36"/>
+  <polygon points="298,51 307,20 286,47" fill="#2c1250"/>
+
+  <!-- 目（左）：赤く光る -->
+  <ellipse cx="258" cy="82" rx="14" ry="12" fill="#e94560" opacity="0.3"/>
+  <ellipse cx="258" cy="82" rx="10" ry="9" fill="#e94560"/>
+  <ellipse cx="258" cy="82" rx="6"  ry="6" fill="#ff7090"/>
+  <ellipse cx="258" cy="82" rx="2.5" ry="3.5" fill="#fff" opacity="0.9"/>
+  <!-- 目（右）：赤く光る -->
+  <ellipse cx="290" cy="82" rx="14" ry="12" fill="#e94560" opacity="0.3"/>
+  <ellipse cx="290" cy="82" rx="10" ry="9" fill="#e94560"/>
+  <ellipse cx="290" cy="82" rx="6"  ry="6" fill="#ff7090"/>
+  <ellipse cx="290" cy="82" rx="2.5" ry="3.5" fill="#fff" opacity="0.9"/>
+
+  <!-- 口 -->
+  <path d="M252,112 Q274,132 298,112" fill="#12061e"/>
+  <!-- 牙 -->
+  <polygon points="260,112 256,126 265,112" fill="#e8e0f8"/>
+  <polygon points="273,112 270,128 277,112" fill="#e8e0f8"/>
+  <polygon points="287,112 284,126 292,112" fill="#e8e0f8"/>
+
+  <!-- 後ろ足（左） -->
+  <path d="M245,172 Q240,185 230,190 L258,190 L258,172 Z" fill="#1e0d36"/>
+  <!-- 後ろ足（右） -->
+  <path d="M302,172 Q308,185 318,190 L292,190 L292,172 Z" fill="#1e0d36"/>
+  <!-- 爪（足・左） -->
+  <line x1="231" y1="190" x2="226" y2="198" stroke="#3a1a60" stroke-width="2"/>
+  <line x1="240" y1="191" x2="238" y2="200" stroke="#3a1a60" stroke-width="2"/>
+  <!-- 爪（足・右） -->
+  <line x1="316" y1="190" x2="321" y2="198" stroke="#3a1a60" stroke-width="2"/>
+  <line x1="308" y1="191" x2="310" y2="200" stroke="#3a1a60" stroke-width="2"/>
+</svg>
