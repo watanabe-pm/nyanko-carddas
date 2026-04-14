@@ -40,6 +40,22 @@ function createCatCardEl(card, options = {}) {
     `;
   }
 
+  // HP表示オプション
+  if (options.showHp && card.hp !== undefined && card.maxHp !== undefined) {
+    const hpPct = Math.max(0, (card.hp / card.maxHp) * 100);
+    const hpWrap = document.createElement('div');
+    hpWrap.className = 'card-hp-wrap';
+    hpWrap.innerHTML = `
+      <span class="card-hp-label">HP</span>
+      <div class="gauge-bar">
+        <div class="gauge-fill hp-fill" style="width:${hpPct}%"></div>
+      </div>
+      <span class="card-hp-text">${card.hp}/${card.maxHp}</span>
+    `;
+    el.appendChild(hpWrap);
+    el.classList.add('has-hp');
+  }
+
   if (options.isKo) el.classList.add('ko');
   return el;
 }
@@ -385,10 +401,10 @@ function renderPrepEquipArea() {
   GameState.selectedCatIds.forEach(cardId => {
     const card = GameState.deck.find(c => c.id === cardId);
 
-    // カード（カード行に追加）
-    cardRow.appendChild(createCatCardEl(card));
+    // カード（HP表示あり）
+    cardRow.appendChild(createCatCardEl(card, { showHp: true }));
 
-    // アイテム選択（アイテム行に追加）
+    // アイテム選択
     const itemWrap = document.createElement('div');
     itemWrap.className = 'prep-item-wrap';
 
@@ -622,7 +638,8 @@ function renderStageClearScreen() {
 
   GameState.selectedCatIds.forEach(id => {
     const battleCat = b.cats.find(c => c.id === id);
-    row.appendChild(createCatCardEl(battleCat));
+    // HP表示あり
+    row.appendChild(createCatCardEl(battleCat, { showHp: true }));
   });
 }
 
